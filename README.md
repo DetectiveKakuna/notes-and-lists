@@ -1,56 +1,117 @@
-# Welcome to your Expo app 👋
+# Notes and Lists
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> **⚠️ Work in progress.** This is a personal project in its earliest stage. The
+> repo currently contains little more than the Expo starter template — none of
+> the features below are implemented yet. Expect the code, data model, and
+> everything else to change without warning.
 
-## Get started
+A notes and lists app for iOS, Android, and web, built with
+[Expo](https://expo.dev) and [Expo Router](https://docs.expo.dev/router/introduction).
 
-1. Install dependencies
+## Why this exists
 
-   ```bash
-   npm install
-   ```
+My wife and I use [Google Keep](https://keep.google.com) constantly — shared
+grocery lists, house projects, random thoughts at 2am. It gets most things
+right, but there are a handful of things we keep wishing it did differently.
+So this is an attempt to build the app we actually want: the parts of Keep that
+work, plus our own additions.
 
-2. Start the app
+It's a public repo because there's no reason for it not to be, not because it's
+ready for anyone else to use.
 
-   ```bash
-   npx expo start
-   ```
+## The Google Keep baseline
 
-In the output, you'll find options to open the app in a
+The goal is to first cover the ground Keep already covers well:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+**Notes and lists**
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Plain text notes with a title and body
+- Checklists with checkable items, including nested/indented sub-items
+- Items that move to the bottom (or hide) once checked
+- Freehand drawing notes and handwritten annotation
+- Photo and image attachments, with text extraction from images
+- Voice notes that are transcribed to text and kept alongside the audio
 
-## Get a fresh project
+**Organizing**
 
-When you're ready, run:
+- Color-coded notes and background images
+- Labels (tags), with multiple labels per note
+- Pin notes to the top of the grid
+- Archive notes to get them out of the main view without deleting
+- Trash that holds deleted notes for a while before purging
+- Grid and single-column list views
+- Search across note text, labels, colors, and attachment types
+
+**Sharing and sync**
+
+- Real-time sync across devices and platforms
+- Share a note with specific people as collaborators who can edit it live
+- Per-note collaborator list rather than all-or-nothing account sharing
+
+**Everything else**
+
+- Offline-first: edit without a connection, sync when you're back
+
+## Our custom features
+
+This is the actual point of the project — the things we want that Keep doesn't
+do. More will land here as we figure them out.
+
+### Store categories on shopping lists
+
+We shop at several stores, and a single grocery list is really several lists
+wearing a trenchcoat. Keep makes you either keep one note per store or scan a
+flat list trying to remember which items come from where.
+
+So: any item on a list can be tagged with a store, and the list displays grouped
+by store.
+
+- Stores are user-defined — add, rename, reorder, and pick a color for each
+- Assign a store when adding an item, or retag it later
+- The list renders as store sections instead of one flat run of items
+- Items with no store assigned collect in their own group rather than vanishing
+- Collapse a section, or focus a single store so you only see what's in front of
+  you while you're actually in the aisle
+- An item remembers the store you last used for it, so recurring items come back
+  pre-tagged
+
+Still open: whether an item can belong to more than one store (for things you'll
+grab wherever you end up first), and whether store tags are per-list or shared
+across every list.
+
+## Getting started
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+From there you can open the app in a
+[development build](https://docs.expo.dev/develop/development-builds/introduction/),
+an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/),
+an [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/), or
+[Expo Go](https://expo.dev/go).
 
-### Other setup steps
+Other useful scripts:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+| Command           | What it does                |
+| ----------------- | --------------------------- |
+| `npm run ios`     | Start and open on iOS       |
+| `npm run android` | Start and open on Android   |
+| `npm run web`     | Start and open in a browser |
+| `npm run lint`    | Lint the project            |
 
-## Learn more
+Application code lives in [src/](src/), with file-based routes under
+[src/app/](src/app/).
 
-To learn more about developing your project with Expo, look at the following resources:
+## Tech stack
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Expo SDK 57 / React Native 0.86
+- Expo Router for file-based, typed routing
+- TypeScript
+- [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native SwiftUI and Jetpack Compose components
+- React Native Reanimated for animation
 
-## Join the community
+## License
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+MIT — see [LICENSE](LICENSE).
