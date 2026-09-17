@@ -13,6 +13,7 @@ expo-env.d.ts
 .kotlin/
 *.orig.*
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
@@ -25,12 +26,30 @@ expo-env.d.ts
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+pnpm-debug.*
+
+# test coverage
+coverage/
 
 # macOS
 .DS_Store
 *.pem
 
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# editors
+.idea/
+
+# agent tooling (personal, not shared)
+.claude/settings.local.json
+
 # local env files
+# Expo recommends ignoring only .env*.local, but this repo is public:
+# ignore .env too so a stray token can never be committed.
+.env
 .env*.local
 
 # typescript

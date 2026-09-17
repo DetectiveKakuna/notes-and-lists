@@ -2,6 +2,7 @@
   "expo": {
     "name": "notes-and-lists",
     "slug": "notes-and-lists",
+    "owner": "floof-n-liz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -34,6 +35,11 @@
         }
       ]
     ],
+    "extra": {
+      "eas": {
+        "projectId": "cb4f7784-03c0-4f4f-bec6-ce05ae9147b4"
+      }
+    },
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
