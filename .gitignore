@@ -55,8 +55,6 @@ desktop.ini
 # typescript
 *.tsbuildinfo
 
-example
-
 # generated native folders
 /ios
 /android
