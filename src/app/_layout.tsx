@@ -1,4 +1,13 @@
-import { Stack } from "expo-router";
+import { ErrorBoundaryProps, Stack } from "expo-router";
+import { Text } from "react-native";
+
+function ScreenErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  return <Text onPress={retry}>Try again: {error.message}</Text>;
+}
+
+export const unstable_settings = {
+  screenErrorBoundary: ScreenErrorBoundary,
+};
 
 export default function RootLayout() {
   return (
