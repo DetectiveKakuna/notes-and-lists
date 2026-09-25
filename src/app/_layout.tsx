@@ -1,5 +1,6 @@
 import { ErrorBoundaryProps, Stack } from "expo-router";
 import { Text } from "react-native";
+import "../global.css";
 
 function ScreenErrorBoundary({ error, retry }: ErrorBoundaryProps) {
   return <Text onPress={retry}>Try again: {error.message}</Text>;
