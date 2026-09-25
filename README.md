@@ -1,16 +1,17 @@
 # Notes and Lists
 
 > **⚠️ Work in progress.** This is a personal project in its earliest stage. The
-> repo currently contains little more than the Expo starter template — none of
-> the features below are implemented yet. Expect the code, data model, and
+> repo currently contains little more than a blank starter app, none of the
+> features below are implemented yet. Expect the code, data model, and
 > everything else to change without warning.
 
-A notes and lists app for iOS, Android, and web, built with
-[Expo](https://expo.dev) and [Expo Router](https://docs.expo.dev/router/introduction).
+A mobile-first notes and lists app built with [Expo](https://expo.dev) and
+[Expo Router](https://docs.expo.dev/router/introduction). Android comes first; a
+web version may follow once 1.0 is out.
 
 ## Why this exists
 
-My wife and I use [Google Keep](https://keep.google.com) constantly — shared
+My wife and I use [Google Keep](https://keep.google.com) constantly, shared
 grocery lists, house projects, random thoughts at 2am. It gets most things
 right, but there are a handful of things we keep wishing it did differently.
 So this is an attempt to build the app we actually want: the parts of Keep that
@@ -88,18 +89,15 @@ npx expo start
 
 From there you can open the app in a
 [development build](https://docs.expo.dev/develop/development-builds/introduction/),
-an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/),
-an [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/), or
+an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/), or
 [Expo Go](https://expo.dev/go).
 
 Other useful scripts:
 
-| Command           | What it does                |
-| ----------------- | --------------------------- |
-| `npm run ios`     | Start and open on iOS       |
-| `npm run android` | Start and open on Android   |
-| `npm run web`     | Start and open in a browser |
-| `npm run lint`    | Lint the project            |
+| Command           | What it does              |
+| ----------------- | ------------------------- |
+| `npm run android` | Start and open on Android |
+| `npm run lint`    | Lint the project          |
 
 Application code lives in [src/](src/), with file-based routes under
 [src/app/](src/app/).
@@ -111,6 +109,32 @@ Application code lives in [src/](src/), with file-based routes under
 - TypeScript
 - [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native SwiftUI and Jetpack Compose components
 - React Native Reanimated for animation
+
+### Planned for 1.0
+
+Not installed yet. These are the libraries chosen for the first release.
+
+- **[React Native Firebase](https://rnfirebase.io/)** (`@react-native-firebase/app`,
+  `/firestore`, `/auth`): Firestore stores notes and lists, and Firebase Auth
+  handles accounts. Chosen over the Firebase JS SDK because it wraps the native
+  Firebase SDKs, which cache notes on the device and queue edits made offline.
+  The offline-first goal above depends on that.
+- **[Nitro Google Sign-In](https://react-native-nitro-google-sign-in.github.io)**
+  (`react-native-nitro-google-signin`, `react-native-nitro-modules`): signs in
+  with Google and passes the ID token to Firebase Auth. It uses Android's
+  Credential Manager, which replaces Google's deprecated legacy sign-in, and it's
+  free and MIT licensed.
+- **[NativeWind](https://www.nativewind.dev/)** (`nativewind`, `tailwindcss` v3):
+  Tailwind CSS utility classes for styling React Native components, using the
+  stable v4 release.
+- **[Sentry](https://docs.sentry.io/platforms/react-native/)**
+  (`@sentry/react-native`): crash and error reporting. Source maps are uploaded
+  during EAS builds so stack traces point at the original TypeScript.
+
+React Native Firebase and Nitro Google Sign-In include native code, so once
+they're added the app will need a
+[development build](https://docs.expo.dev/develop/development-builds/introduction/)
+instead of Expo Go.
 
 ## License
 
