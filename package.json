@@ -38,6 +38,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
+    "prettyLint": "prettier --write . && expo lint",
     "lint": "expo lint"
   },
   "private": true
