@@ -1,5 +1,7 @@
 # Notes and Lists
 
+[![CI](https://github.com/DetectiveKakuna/notes-and-lists/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/DetectiveKakuna/notes-and-lists/actions/workflows/ci.yml)
+
 > **⚠️ Work in progress.** This is a personal project in its earliest stage. The
 > repo currently contains little more than a blank starter app, none of the
 > features below are implemented yet. Expect the code, data model, and
@@ -82,6 +84,8 @@ across every list.
 
 ## Getting started
 
+Requires Node.js 26 (see [.nvmrc](.nvmrc)).
+
 ```bash
 npm install
 npx expo start
@@ -90,14 +94,17 @@ npx expo start
 From there you can open the app in a
 [development build](https://docs.expo.dev/develop/development-builds/introduction/),
 an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/), or
-[Expo Go](https://expo.dev/go).
+[Expo Go](https://expo.dev/go). The Google Sans font is embedded at build time,
+so Expo Go falls back to the system font; use a development build to see the
+app as designed.
 
 Other useful scripts:
 
-| Command           | What it does              |
-| ----------------- | ------------------------- |
-| `npm run android` | Start and open on Android |
-| `npm run lint`    | Lint the project          |
+| Command              | What it does                                            |
+| -------------------- | ------------------------------------------------------- |
+| `npm run android`    | Build and run on a connected Android device or emulator |
+| `npm run lint`       | Lint the project with ESLint                            |
+| `npm run prettyLint` | Format everything with Prettier, then lint              |
 
 Application code lives in [src/](src/), with file-based routes under
 [src/app/](src/app/).
@@ -109,6 +116,15 @@ Application code lives in [src/](src/), with file-based routes under
 - TypeScript
 - [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native SwiftUI and Jetpack Compose components
 - React Native Reanimated for animation
+- [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling
+- Google Sans, embedded at build time with the `expo-font` config plugin
+
+### Tooling
+
+- ESLint (`eslint-config-expo`) and Prettier, with class sorting from
+  `prettier-plugin-tailwindcss`
+- GitHub Actions CI on every pull request and push to `develop`: Expo
+  dependency check, formatting check, lint, and type check
 
 ### Planned for 1.0
 
@@ -124,9 +140,6 @@ Not installed yet. These are the libraries chosen for the first release.
   with Google and passes the ID token to Firebase Auth. It uses Android's
   Credential Manager, which replaces Google's deprecated legacy sign-in, and it's
   free and MIT licensed.
-- **[NativeWind](https://www.nativewind.dev/)** (`nativewind`, `tailwindcss` v3):
-  Tailwind CSS utility classes for styling React Native components, using the
-  stable v4 release.
 - **[Sentry](https://docs.sentry.io/platforms/react-native/)**
   (`@sentry/react-native`): crash and error reporting. Source maps are uploaded
   during EAS builds so stack traces point at the original TypeScript.
