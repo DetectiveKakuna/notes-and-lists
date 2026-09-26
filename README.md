@@ -125,6 +125,7 @@ src/
   app/              Expo Router routes: screens and layouts
   components/       Shared components, such as AppText
   hooks/            Custom hooks, such as useColors
+  lib/              Small shared utilities, such as cn
   theme/            Color roles and the navigation theme
   global.css        Tailwind entry point
 app.config.ts       Expo app configuration
@@ -164,6 +165,14 @@ is about 130 KB, compared with about 2 MB for each weight of the original
 Google Sans. It's available as the `font-sans` class, and the `AppText`
 component applies it along with the default text color.
 
+Styling goes through classes first. The classes passed to `AppText` are
+combined with its defaults by a small `cn()` helper (`clsx` plus
+`tailwind-merge`). When two classes conflict, the one passed in wins. For
+example, `className="text-primary"` replaces the default text color, while
+`text-lg` sets the size and keeps the default color. `AppText` still accepts a
+`style` prop, kept for values only known at runtime, such as a color that
+comes from a note's data.
+
 ## Tech stack
 
 - Expo SDK 57 / React Native 0.86
@@ -178,7 +187,9 @@ component applies it along with the default text color.
 ### Tooling and workflow
 
 - ESLint (`eslint-config-expo`) and Prettier, with class sorting from
-  `prettier-plugin-tailwindcss`
+  `prettier-plugin-tailwindcss`, including classes passed to `cn()`
+- `tailwind-merge` stays on v2 on purpose: v3 only supports Tailwind CSS v4,
+  and this project uses Tailwind CSS v3 through NativeWind v4
 - GitHub Actions CI on every pull request and push to `develop`: Expo
   dependency check, formatting check, lint, and type check
 - `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,
