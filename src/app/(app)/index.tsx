@@ -1,9 +1,14 @@
-import { Text, View } from "react-native";
+import AppText from "@/components/app-text";
+import useColors from "@/hooks/use-colors";
+import { ActivityIndicator, View } from "react-native";
 
 export default function Index() {
+  const colors = useColors();
+
   return (
-    <View className="h-full bg-surface">
-      <Text className="text-on-surface">Basic Text.</Text>
+    <View>
+      <ActivityIndicator size="large" color={colors.primary} />
+      <AppText>This is Google Sans.</AppText>
     </View>
   );
 }
