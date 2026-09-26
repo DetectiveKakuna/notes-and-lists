@@ -40,7 +40,8 @@
     "start": "expo start",
     "android": "expo run:android",
     "prettyLint": "prettier --write . && expo lint",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "android:release": "expo run:android --variant release"
   },
   "private": true
 }
