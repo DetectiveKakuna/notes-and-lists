@@ -110,8 +110,14 @@ appear in development and release builds.
 | `npm start`               | Start the Metro dev server                                                                     |
 | `npm run android`         | Build a development build and run it on a connected device or emulator                         |
 | `npm run android:release` | Build and run a release variant, to check the splash, fonts, and performance as users see them |
+| `npm run format`          | Format everything with Prettier                                                                |
+| `npm run format:check`    | Check formatting without changing files                                                        |
 | `npm run lint`            | Lint the project with ESLint                                                                   |
-| `npm run prettyLint`      | Format everything with Prettier, then lint                                                     |
+| `npm run typecheck`       | Type-check the project with TypeScript                                                         |
+| `npm run prettyLint`      | Format everything, then lint: a one-step cleanup before committing                             |
+
+CI runs `format:check`, `lint`, and `typecheck`, the check-only scripts, so a
+local run of those three matches what CI will report.
 
 The `android/` folder is generated from [app.config.ts](app.config.ts) and
 isn't committed. After changing native settings there (fonts, splash screen,

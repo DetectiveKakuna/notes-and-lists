@@ -70,6 +70,11 @@ const config: ExpoConfig = {
       monochromeImage: "./assets/images/icon/adaptive-icon-monochrome.png",
     },
     package: "com.floofnliz.notesandlists",
+    blockedPermissions: [
+      "READ_EXTERNAL_STORAGE",
+      "SYSTEM_ALERT_WINDOW",
+      "WRITE_EXTERNAL_STORAGE",
+    ],
   },
   web: {
     bundler: "metro",

@@ -1,11 +1,14 @@
+import AppText from "@/components/app-text";
 import { getNavigationTheme } from "@/theme/navigation";
 import { ErrorBoundaryProps, Stack } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
-import { Text, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import "../global.css";
 
-function ScreenErrorBoundary({ error, retry }: ErrorBoundaryProps) {
-  return <Text onPress={retry}>Try again: {error.message}</Text>;
+function ScreenErrorBoundary({ retry }: ErrorBoundaryProps) {
+  return (
+    <AppText onPress={retry}>TODO: Implement real error boundary.</AppText>
+  );
 }
 
 export const unstable_settings = {
