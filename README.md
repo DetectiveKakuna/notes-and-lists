@@ -2,10 +2,10 @@
 
 [![CI](https://github.com/DetectiveKakuna/notes-and-lists/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/DetectiveKakuna/notes-and-lists/actions/workflows/ci.yml)
 
-> **⚠️ Work in progress.** This is a personal project in its earliest stage. The
-> repo currently contains little more than a blank starter app, none of the
-> features below are implemented yet. Expect the code, data model, and
-> everything else to change without warning.
+> **⚠️ Work in progress.** This is a personal project in its early stages. The
+> app shell is in place: navigation, a light and dark theme, and the tooling
+> around it. None of the note features below are implemented yet. Expect the
+> code, data model, and everything else to change without warning.
 
 A mobile-first notes and lists app built with [Expo](https://expo.dev) and
 [Expo Router](https://docs.expo.dev/router/introduction). Android comes first; a
@@ -84,7 +84,14 @@ across every list.
 
 ## Getting started
 
-Requires Node.js 26 (see [.nvmrc](.nvmrc)).
+### Prerequisites
+
+- Node.js 26 (pinned in [.nvmrc](.nvmrc))
+- For native builds: Android Studio with the Android SDK and JDK 17, set up as in
+  Expo's
+  [Android Studio guide](https://docs.expo.dev/workflow/android-studio-emulator/)
+
+### Run it
 
 ```bash
 npm install
@@ -93,38 +100,91 @@ npx expo start
 
 From there you can open the app in a
 [development build](https://docs.expo.dev/develop/development-builds/introduction/),
-an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/), or
-[Expo Go](https://expo.dev/go). The Google Sans font is embedded at build time,
-so Expo Go falls back to the system font; use a development build to see the
-app as designed.
+an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/),
+or [Expo Go](https://expo.dev/go). Expo Go runs the app, but the Google Sans
+font and the splash screen are compiled into the native app, so they only
+appear in development and release builds.
 
-Other useful scripts:
+| Command                   | What it does                                                                                   |
+| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| `npm start`               | Start the Metro dev server                                                                     |
+| `npm run android`         | Build a development build and run it on a connected device or emulator                         |
+| `npm run android:release` | Build and run a release variant, to check the splash, fonts, and performance as users see them |
+| `npm run lint`            | Lint the project with ESLint                                                                   |
+| `npm run prettyLint`      | Format everything with Prettier, then lint                                                     |
 
-| Command              | What it does                                            |
-| -------------------- | ------------------------------------------------------- |
-| `npm run android`    | Build and run on a connected Android device or emulator |
-| `npm run lint`       | Lint the project with ESLint                            |
-| `npm run prettyLint` | Format everything with Prettier, then lint              |
+The `android/` folder is generated from [app.config.ts](app.config.ts) and
+isn't committed. After changing native settings there (fonts, splash screen,
+icons, plugins), regenerate it with `npx expo prebuild --clean` before
+building.
 
-Application code lives in [src/](src/), with file-based routes under
-[src/app/](src/app/).
+## Project structure
+
+```
+src/
+  app/              Expo Router routes: screens and layouts
+  components/       Shared components, such as AppText
+  hooks/            Custom hooks, such as useColors
+  theme/            Color roles and the navigation theme
+  global.css        Tailwind entry point
+app.config.ts       Expo app configuration
+tailwind.config.js  Tailwind theme, generated from src/theme/colors.ts
+```
+
+## Design and theming
+
+The color theme comes from the
+[Material Theme Builder](https://material-foundation.github.io/material-theme-builder/),
+generated from the source color `#6C6CAA`, the indigo in the app icon. It uses
+Material 3's color roles (`surface`, `surfaceContainer`, `onSurface`, `primary`,
+and so on), each with a light and a dark value.
+
+Those values are defined once, in [src/theme/colors.ts](src/theme/colors.ts),
+and everything else reads from that file:
+
+- **Tailwind classes.** [tailwind.config.js](tailwind.config.js) turns each
+  role into a CSS variable plus a matching class, such as `bg-surface` or
+  `text-on-surface`. The variables switch with the system's light or dark
+  setting, so components don't need any `dark:` variants.
+- **Navigation.** The React Navigation theme uses the same roles for screen
+  backgrounds, headers, and the drawer.
+- **Color values in code.** For props that need an actual color rather than a
+  class, such as an `ActivityIndicator`'s `color`, the `useColors()` hook
+  returns the current light or dark set and updates when the system setting
+  changes.
+- **Splash screen.** [app.config.ts](app.config.ts) imports the `surface`
+  colors for the light and dark splash backgrounds. Expo's config loader can't
+  import other TypeScript files on its own, so `tsx` handles that import.
+
+Adding or changing a color is a one-file edit.
+
+Text uses Google Sans in weights 400 to 700, embedded at build time with the
+`expo-font` config plugin rather than loaded at startup. It's available as the
+`font-sans` class, and the `AppText` component applies it along with the
+default text color.
 
 ## Tech stack
 
 - Expo SDK 57 / React Native 0.86
-- Expo Router for file-based, typed routing
+- Expo Router for file-based, typed routing, with a drawer navigator
 - TypeScript
 - [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native SwiftUI and Jetpack Compose components
 - React Native Reanimated for animation
-- [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling
+- [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
+  the stable release rather than the v5 release candidate
 - Google Sans, embedded at build time with the `expo-font` config plugin
 
-### Tooling
+### Tooling and workflow
 
 - ESLint (`eslint-config-expo`) and Prettier, with class sorting from
   `prettier-plugin-tailwindcss`
 - GitHub Actions CI on every pull request and push to `develop`: Expo
   dependency check, formatting check, lint, and type check
+- `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,
+  or `release/*` branches, and a repository ruleset enforces those names.
+- `main` holds releases. It only accepts pull requests from `develop`, merged
+  with a merge commit, and the CI checks must pass first. Force pushes and
+  deletions are blocked on both `main` and `develop`.
 
 ### Planned for 1.0
 
