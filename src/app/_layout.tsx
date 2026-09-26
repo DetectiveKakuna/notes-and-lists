@@ -1,6 +1,6 @@
-import AppText from "@/components/app-text";
+import { AppText } from "@/components/app-text";
 import { getNavigationTheme } from "@/theme/navigation";
-import { ErrorBoundaryProps, Stack } from "expo-router";
+import { type ErrorBoundaryProps, Stack } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { useColorScheme } from "react-native";
 import "../global.css";

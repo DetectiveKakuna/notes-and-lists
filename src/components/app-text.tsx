@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
-import { Text, TextProps } from "react-native";
+import { Text, type TextProps } from "react-native";
 
-export default function AppText({ className, children, ...rest }: TextProps) {
+export function AppText({ className, children, ...rest }: TextProps) {
   return (
     <Text className={cn("font-sans text-on-surface", className)} {...rest}>
       {children}

@@ -1,4 +1,6 @@
-export type MD3ColorsType = {
+import { type ColorSchemeName } from "react-native";
+
+export type ColorRoles = {
   surface: string;
   surfaceContainer: string;
   surfaceContainerHigh: string;
@@ -10,12 +12,9 @@ export type MD3ColorsType = {
   error: string;
 };
 
-type ColorsType = {
-  light: MD3ColorsType;
-  dark: MD3ColorsType;
-};
+export type ColorMode = "light" | "dark";
 
-export const Colors: ColorsType = {
+export const Colors: Record<ColorMode, ColorRoles> = {
   light: {
     surface: "#FCF8FE",
     surfaceContainer: "#F0ECF2",
@@ -38,4 +37,12 @@ export const Colors: ColorsType = {
     onPrimary: "#2A2963",
     error: "#FFB4AB",
   },
-} as const;
+};
+
+export function getColors(scheme: ColorSchemeName): ColorRoles {
+  return Colors[getColorMode(scheme)];
+}
+
+export function getColorMode(scheme: ColorSchemeName): ColorMode {
+  return scheme === "dark" ? "dark" : "light";
+}

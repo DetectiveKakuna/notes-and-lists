@@ -163,7 +163,10 @@ and everything else reads from that file:
   colors for the light and dark splash backgrounds. Expo's config loader can't
   import other TypeScript files on its own, so `tsx` handles that import.
 
-Adding or changing a color is a one-file edit.
+Adding or changing a color is a one-file edit. The choice between light and dark
+is also made in one place, `getColorMode()` in the same file. Everything else
+looks its values up by mode, and the two navigation themes are built once and
+reused.
 
 Text uses Google Sans Flex in weights 400 to 700, embedded at build time with
 the `expo-font` config plugin rather than loaded at startup. Each static weight
@@ -184,7 +187,9 @@ comes from a note's data.
 - Expo SDK 57 / React Native 0.86
 - Expo Router for file-based, typed routing, with a drawer navigator
 - TypeScript
-- [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native SwiftUI and Jetpack Compose components
+- [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native Jetpack
+  Compose controls, planned for things like reminder date pickers and bottom
+  sheets
 - React Native Reanimated for animation
 - [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
   the stable release rather than the v5 release candidate
@@ -196,6 +201,9 @@ comes from a note's data.
   `prettier-plugin-tailwindcss`, including classes passed to `cn()`
 - `tailwind-merge` stays on v2 on purpose: v3 only supports Tailwind CSS v4,
   and this project uses Tailwind CSS v3 through NativeWind v4
+- npm's install-script allowlist (`allowScripts` in `package.json`) approves
+  only the packages that need them, `esbuild` and `unrs-resolver`, each at a
+  specific version
 - GitHub Actions CI on every pull request and push to `develop`: Expo
   dependency check, formatting check, lint, and type check
 - `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,
