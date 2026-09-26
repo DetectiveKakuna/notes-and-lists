@@ -1,4 +1,21 @@
-export const Colors = {
+export type MD3ColorsType = {
+  surface: string;
+  surfaceContainer: string;
+  surfaceContainerHigh: string;
+  onSurface: string;
+  onSurfaceVariant: string;
+  outlineVariant: string;
+  primary: string;
+  onPrimary: string;
+  error: string;
+};
+
+type ColorsType = {
+  light: MD3ColorsType;
+  dark: MD3ColorsType;
+};
+
+export const Colors: ColorsType = {
   light: {
     surface: "#FCF8FE",
     surfaceContainer: "#F0ECF2",
