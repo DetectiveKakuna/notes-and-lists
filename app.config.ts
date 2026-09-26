@@ -27,22 +27,22 @@ const config: ExpoConfig = {
         android: {
           fonts: [
             {
-              fontFamily: "Google Sans",
+              fontFamily: "Google Sans Flex",
               fontDefinitions: [
                 {
-                  path: "./node_modules/@expo-google-fonts/google-sans/400Regular/GoogleSans_400Regular.ttf",
+                  path: "./node_modules/@expo-google-fonts/google-sans-flex/400Regular/GoogleSansFlex_400Regular.ttf",
                   weight: 400,
                 },
                 {
-                  path: "./node_modules/@expo-google-fonts/google-sans/500Medium/GoogleSans_500Medium.ttf",
+                  path: "./node_modules/@expo-google-fonts/google-sans-flex/500Medium/GoogleSansFlex_500Medium.ttf",
                   weight: 500,
                 },
                 {
-                  path: "./node_modules/@expo-google-fonts/google-sans/600SemiBold/GoogleSans_600SemiBold.ttf",
+                  path: "./node_modules/@expo-google-fonts/google-sans-flex/600SemiBold/GoogleSansFlex_600SemiBold.ttf",
                   weight: 600,
                 },
                 {
-                  path: "./node_modules/@expo-google-fonts/google-sans/700Bold/GoogleSans_700Bold.ttf",
+                  path: "./node_modules/@expo-google-fonts/google-sans-flex/700Bold/GoogleSansFlex_700Bold.ttf",
                   weight: 700,
                 },
               ],

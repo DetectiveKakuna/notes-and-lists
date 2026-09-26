@@ -102,7 +102,7 @@ From there you can open the app in a
 [development build](https://docs.expo.dev/develop/development-builds/introduction/),
 an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/),
 or [Expo Go](https://expo.dev/go). Expo Go runs the app, but the Google Sans
-font and the splash screen are compiled into the native app, so they only
+Flex font and the splash screen are compiled into the native app, so they only
 appear in development and release builds.
 
 | Command                   | What it does                                                                                   |
@@ -158,10 +158,11 @@ and everything else reads from that file:
 
 Adding or changing a color is a one-file edit.
 
-Text uses Google Sans in weights 400 to 700, embedded at build time with the
-`expo-font` config plugin rather than loaded at startup. It's available as the
-`font-sans` class, and the `AppText` component applies it along with the
-default text color.
+Text uses Google Sans Flex in weights 400 to 700, embedded at build time with
+the `expo-font` config plugin rather than loaded at startup. Each static weight
+is about 130 KB, compared with about 2 MB for each weight of the original
+Google Sans. It's available as the `font-sans` class, and the `AppText`
+component applies it along with the default text color.
 
 ## Tech stack
 
@@ -172,7 +173,7 @@ default text color.
 - React Native Reanimated for animation
 - [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
   the stable release rather than the v5 release candidate
-- Google Sans, embedded at build time with the `expo-font` config plugin
+- Google Sans Flex, embedded at build time with the `expo-font` config plugin
 
 ### Tooling and workflow
 

@@ -21,7 +21,7 @@ module.exports = {
     extend: {
       colors: toColors(Colors.light),
       fontFamily: {
-        sans: ["Google Sans", "sans-serif"],
+        sans: ["Google Sans Flex", "sans-serif"],
       },
     },
   },

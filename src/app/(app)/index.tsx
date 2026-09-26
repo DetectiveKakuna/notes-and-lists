@@ -8,7 +8,7 @@ export default function Index() {
   return (
     <View>
       <ActivityIndicator size="large" color={colors.primary} />
-      <AppText>This is Google Sans.</AppText>
+      <AppText>This is Google Sans Flex.</AppText>
     </View>
   );
 }

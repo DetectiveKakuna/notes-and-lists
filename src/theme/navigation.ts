@@ -10,19 +10,19 @@ export const getNavigationTheme = (
 
 const themeFonts: Theme["fonts"] = {
   regular: {
-    fontFamily: "Google Sans",
+    fontFamily: "Google Sans Flex",
     fontWeight: "400",
   },
   medium: {
-    fontFamily: "Google Sans",
+    fontFamily: "Google Sans Flex",
     fontWeight: "500",
   },
   bold: {
-    fontFamily: "Google Sans",
+    fontFamily: "Google Sans Flex",
     fontWeight: "600",
   },
   heavy: {
-    fontFamily: "Google Sans",
+    fontFamily: "Google Sans Flex",
     fontWeight: "700",
   },
 };
