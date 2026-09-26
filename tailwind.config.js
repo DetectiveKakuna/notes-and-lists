@@ -20,6 +20,9 @@ module.exports = {
   theme: {
     extend: {
       colors: toColors(Colors.light),
+      fontFamily: {
+        sans: ["Google Sans", "sans-serif"],
+      },
     },
   },
   plugins: [
