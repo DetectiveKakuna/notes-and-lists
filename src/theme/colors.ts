@@ -1,16 +1,19 @@
 import { type ColorSchemeName } from "react-native";
 
-export type ColorRoles = {
-  surface: string;
-  surfaceContainer: string;
-  surfaceContainerHigh: string;
-  onSurface: string;
-  onSurfaceVariant: string;
-  outlineVariant: string;
-  primary: string;
-  onPrimary: string;
-  error: string;
-};
+type HexColor = `#${string}`;
+
+export type ColorRoles = Record<
+  | "surface"
+  | "surfaceContainer"
+  | "surfaceContainerHigh"
+  | "onSurface"
+  | "onSurfaceVariant"
+  | "outlineVariant"
+  | "primary"
+  | "onPrimary"
+  | "error",
+  HexColor
+>;
 
 export type ColorMode = "light" | "dark";
 
@@ -44,5 +47,5 @@ export function getColors(scheme: ColorSchemeName): ColorRoles {
 }
 
 export function getColorMode(scheme: ColorSchemeName): ColorMode {
-  return scheme === "dark" ? "dark" : "light";
+  return scheme === "light" ? "light" : "dark";
 }

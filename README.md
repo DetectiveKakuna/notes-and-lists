@@ -114,10 +114,12 @@ appear in development and release builds.
 | `npm run format:check`    | Check formatting without changing files                                                        |
 | `npm run lint`            | Lint the project with ESLint                                                                   |
 | `npm run typecheck`       | Type-check the project with TypeScript                                                         |
+| `npm test`                | Run the unit tests once                                                                        |
+| `npm run test:watch`      | Re-run the tests on every change while writing them                                            |
 | `npm run prettyLint`      | Format everything, then lint: a one-step cleanup before committing                             |
 
-CI runs `format:check`, `lint`, and `typecheck`, the check-only scripts, so a
-local run of those three matches what CI will report.
+CI runs `format:check`, `lint`, `typecheck`, and `test`, the check-only
+scripts, so a local run of those four matches what CI will report.
 
 The `android/` folder is generated from [app.config.ts](app.config.ts) and
 isn't committed. After changing native settings there (fonts, splash screen,
@@ -134,6 +136,7 @@ src/
   lib/              Small shared utilities, such as cn
   theme/            Color roles and the navigation theme
   global.css        Tailwind entry point
+__tests__/          Unit tests, mirroring the src/ folders
 app.config.ts       Expo app configuration
 tailwind.config.js  Tailwind theme, generated from src/theme/colors.ts
 ```
@@ -204,8 +207,11 @@ comes from a note's data.
 - npm's install-script allowlist (`allowScripts` in `package.json`) approves
   only the packages that need them, `esbuild` and `unrs-resolver`, each at a
   specific version
-- GitHub Actions CI on every pull request and push to `develop`: Expo
-  dependency check, formatting check, lint, and type check
+- Jest (with the `jest-expo` preset) and React Native Testing Library for unit
+  tests, covering the color roles, the light and dark fallback, the navigation
+  theme, and the `cn()` merge rules
+- GitHub Actions CI runs on every pull request and push to `develop`: Expo
+  dependency check, formatting check, lint, type check, and tests
 - `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,
   or `release/*` branches, and a repository ruleset enforces those names.
 - `main` holds releases. It only accepts pull requests from `develop`, merged
