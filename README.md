@@ -1,16 +1,19 @@
 # Notes and Lists
 
-> **⚠️ Work in progress.** This is a personal project in its earliest stage. The
-> repo currently contains little more than the Expo starter template — none of
-> the features below are implemented yet. Expect the code, data model, and
-> everything else to change without warning.
+[![CI](https://github.com/DetectiveKakuna/notes-and-lists/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/DetectiveKakuna/notes-and-lists/actions/workflows/ci.yml)
 
-A notes and lists app for iOS, Android, and web, built with
-[Expo](https://expo.dev) and [Expo Router](https://docs.expo.dev/router/introduction).
+> **⚠️ Work in progress.** This is a personal project in its early stages. The
+> app shell is in place: navigation, a light and dark theme, and the tooling
+> around it. None of the note features below are implemented yet. Expect the
+> code, data model, and everything else to change without warning.
+
+A mobile-first notes and lists app built with [Expo](https://expo.dev) and
+[Expo Router](https://docs.expo.dev/router/introduction). Android comes first; a
+web version may follow once 1.0 is out.
 
 ## Why this exists
 
-My wife and I use [Google Keep](https://keep.google.com) constantly — shared
+My wife and I use [Google Keep](https://keep.google.com) constantly, shared
 grocery lists, house projects, random thoughts at 2am. It gets most things
 right, but there are a handful of things we keep wishing it did differently.
 So this is an attempt to build the app we actually want: the parts of Keep that
@@ -81,6 +84,15 @@ across every list.
 
 ## Getting started
 
+### Prerequisites
+
+- Node.js 26 (pinned in [.nvmrc](.nvmrc))
+- For native builds: Android Studio with the Android SDK and JDK 17, set up as in
+  Expo's
+  [Android Studio guide](https://docs.expo.dev/workflow/android-studio-emulator/)
+
+### Run it
+
 ```bash
 npm install
 npx expo start
@@ -89,28 +101,145 @@ npx expo start
 From there you can open the app in a
 [development build](https://docs.expo.dev/develop/development-builds/introduction/),
 an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/),
-an [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/), or
-[Expo Go](https://expo.dev/go).
+or [Expo Go](https://expo.dev/go). Expo Go runs the app, but the Google Sans
+Flex font and the splash screen are compiled into the native app, so they only
+appear in development and release builds.
 
-Other useful scripts:
+| Command                   | What it does                                                                                   |
+| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| `npm start`               | Start the Metro dev server                                                                     |
+| `npm run android`         | Build a development build and run it on a connected device or emulator                         |
+| `npm run android:release` | Build and run a release variant, to check the splash, fonts, and performance as users see them |
+| `npm run format`          | Format everything with Prettier                                                                |
+| `npm run format:check`    | Check formatting without changing files                                                        |
+| `npm run lint`            | Lint the project with ESLint                                                                   |
+| `npm run typecheck`       | Type-check the project with TypeScript                                                         |
+| `npm test`                | Run the unit tests once                                                                        |
+| `npm run test:watch`      | Re-run the tests on every change while writing them                                            |
+| `npm run prettyLint`      | Format everything, then lint: a one-step cleanup before committing                             |
 
-| Command           | What it does                |
-| ----------------- | --------------------------- |
-| `npm run ios`     | Start and open on iOS       |
-| `npm run android` | Start and open on Android   |
-| `npm run web`     | Start and open in a browser |
-| `npm run lint`    | Lint the project            |
+CI runs `format:check`, `lint`, `typecheck`, and `test`, the check-only
+scripts, so a local run of those four matches what CI will report.
 
-Application code lives in [src/](src/), with file-based routes under
-[src/app/](src/app/).
+The `android/` folder is generated from [app.config.ts](app.config.ts) and
+isn't committed. After changing native settings there (fonts, splash screen,
+icons, plugins), regenerate it with `npx expo prebuild --clean` before
+building.
+
+## Project structure
+
+```
+src/
+  app/              Expo Router routes: screens and layouts
+  components/       Shared components, such as AppText
+  hooks/            Custom hooks, such as useColors
+  lib/              Small shared utilities, such as cn
+  theme/            Color roles and the navigation theme
+  global.css        Tailwind entry point
+__tests__/          Unit tests, mirroring the src/ folders
+app.config.ts       Expo app configuration
+tailwind.config.js  Tailwind theme, generated from src/theme/colors.ts
+```
+
+## Design and theming
+
+The color theme comes from the
+[Material Theme Builder](https://material-foundation.github.io/material-theme-builder/),
+generated from the source color `#6C6CAA`, the indigo in the app icon. It uses
+Material 3's color roles (`surface`, `surfaceContainer`, `onSurface`, `primary`,
+and so on), each with a light and a dark value.
+
+Those values are defined once, in [src/theme/colors.ts](src/theme/colors.ts),
+and everything else reads from that file:
+
+- **Tailwind classes.** [tailwind.config.js](tailwind.config.js) turns each
+  role into a CSS variable plus a matching class, such as `bg-surface` or
+  `text-on-surface`. The variables switch with the system's light or dark
+  setting, so components don't need any `dark:` variants.
+- **Navigation.** The React Navigation theme uses the same roles for screen
+  backgrounds, headers, and the drawer.
+- **Color values in code.** For props that need an actual color rather than a
+  class, such as an `ActivityIndicator`'s `color`, the `useColors()` hook
+  returns the current light or dark set and updates when the system setting
+  changes.
+- **Splash screen.** [app.config.ts](app.config.ts) imports the `surface`
+  colors for the light and dark splash backgrounds. Expo's config loader can't
+  import other TypeScript files on its own, so `tsx` handles that import.
+
+Adding or changing a color is a one-file edit. The choice between light and dark
+is also made in one place, `getColorMode()` in the same file. Everything else
+looks its values up by mode, and the two navigation themes are built once and
+reused.
+
+Text uses Google Sans Flex in weights 400 to 700, embedded at build time with
+the `expo-font` config plugin rather than loaded at startup. Each static weight
+is about 130 KB, compared with about 2 MB for each weight of the original
+Google Sans. It's available as the `font-sans` class, and the `AppText`
+component applies it along with the default text color.
+
+Styling goes through classes first. The classes passed to `AppText` are
+combined with its defaults by a small `cn()` helper (`clsx` plus
+`tailwind-merge`). When two classes conflict, the one passed in wins. For
+example, `className="text-primary"` replaces the default text color, while
+`text-lg` sets the size and keeps the default color. `AppText` still accepts a
+`style` prop, kept for values only known at runtime, such as a color that
+comes from a note's data.
 
 ## Tech stack
 
 - Expo SDK 57 / React Native 0.86
-- Expo Router for file-based, typed routing
+- Expo Router for file-based, typed routing, with a drawer navigator
 - TypeScript
-- [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native SwiftUI and Jetpack Compose components
+- [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native Jetpack
+  Compose controls, planned for things like reminder date pickers and bottom
+  sheets
 - React Native Reanimated for animation
+- [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
+  the stable release rather than the v5 release candidate
+- Google Sans Flex, embedded at build time with the `expo-font` config plugin
+
+### Tooling and workflow
+
+- ESLint (`eslint-config-expo`) and Prettier, with class sorting from
+  `prettier-plugin-tailwindcss`, including classes passed to `cn()`
+- `tailwind-merge` stays on v2 on purpose: v3 only supports Tailwind CSS v4,
+  and this project uses Tailwind CSS v3 through NativeWind v4
+- npm's install-script allowlist (`allowScripts` in `package.json`) approves
+  only the packages that need them, `esbuild` and `unrs-resolver`, each at a
+  specific version
+- Jest (with the `jest-expo` preset) and React Native Testing Library for unit
+  tests, covering the color roles, the light and dark fallback, the navigation
+  theme, and the `cn()` merge rules
+- GitHub Actions CI runs on every pull request and push to `develop`: Expo
+  dependency check, formatting check, lint, type check, and tests
+- `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,
+  or `release/*` branches, and a repository ruleset enforces those names.
+- `main` holds releases. It only accepts pull requests from `develop`, merged
+  with a merge commit, and the CI checks must pass first. Force pushes and
+  deletions are blocked on both `main` and `develop`.
+
+### Planned for 1.0
+
+Not installed yet. These are the libraries chosen for the first release.
+
+- **[React Native Firebase](https://rnfirebase.io/)** (`@react-native-firebase/app`,
+  `/firestore`, `/auth`): Firestore stores notes and lists, and Firebase Auth
+  handles accounts. Chosen over the Firebase JS SDK because it wraps the native
+  Firebase SDKs, which cache notes on the device and queue edits made offline.
+  The offline-first goal above depends on that.
+- **[Nitro Google Sign-In](https://react-native-nitro-google-sign-in.github.io)**
+  (`react-native-nitro-google-signin`, `react-native-nitro-modules`): signs in
+  with Google and passes the ID token to Firebase Auth. It uses Android's
+  Credential Manager, which replaces Google's deprecated legacy sign-in, and it's
+  free and MIT licensed.
+- **[Sentry](https://docs.sentry.io/platforms/react-native/)**
+  (`@sentry/react-native`): crash and error reporting. Source maps are uploaded
+  during EAS builds so stack traces point at the original TypeScript.
+
+React Native Firebase and Nitro Google Sign-In include native code, so once
+they're added the app will need a
+[development build](https://docs.expo.dev/develop/development-builds/introduction/)
+instead of Expo Go.
 
 ## License
 

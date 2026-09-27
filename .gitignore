@@ -58,3 +58,6 @@ desktop.ini
 # generated native folders
 /ios
 /android
+
+# local design folders
+/design/
