@@ -42,10 +42,10 @@ export const Colors: Record<ColorMode, ColorRoles> = {
   },
 };
 
-export function getColors(scheme: ColorSchemeName): ColorRoles {
-  return Colors[getColorMode(scheme)];
+export function getColorMode(scheme: ColorSchemeName): ColorMode {
+  return scheme === "dark" ? "dark" : "light";
 }
 
-export function getColorMode(scheme: ColorSchemeName): ColorMode {
-  return scheme === "light" ? "light" : "dark";
+export function getColors(scheme: ColorSchemeName): ColorRoles {
+  return Colors[getColorMode(scheme)];
 }

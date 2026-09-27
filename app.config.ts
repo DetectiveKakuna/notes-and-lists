@@ -1,6 +1,8 @@
-import { type ExpoConfig } from "expo/config";
 import "tsx/cjs"; // must load before any .ts imports
+
+import { type ExpoConfig } from "expo/config";
 import { Colors } from "./src/theme/colors";
+import { FontFamily } from "./src/theme/fonts";
 
 const config: ExpoConfig = {
   name: "Notes and Lists",
@@ -27,7 +29,7 @@ const config: ExpoConfig = {
         android: {
           fonts: [
             {
-              fontFamily: "Google Sans Flex",
+              fontFamily: FontFamily.plain,
               fontDefinitions: [
                 {
                   path: "./node_modules/@expo-google-fonts/google-sans-flex/400Regular/GoogleSansFlex_400Regular.ttf",

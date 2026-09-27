@@ -1,4 +1,5 @@
 const { Colors } = require("./src/theme/colors");
+const { FontFamily } = require("./src/theme/fonts");
 
 const toKebabCase = (camelCase) =>
   camelCase.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
@@ -21,7 +22,7 @@ module.exports = {
     extend: {
       colors: toColors(Colors.light),
       fontFamily: {
-        sans: ["Google Sans Flex", "sans-serif"],
+        sans: [FontFamily.plain, "sans-serif"],
       },
     },
   },

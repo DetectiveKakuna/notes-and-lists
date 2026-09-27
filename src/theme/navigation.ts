@@ -1,22 +1,23 @@
 import { type Theme } from "expo-router";
 import { type ColorSchemeName } from "react-native";
 import { type ColorMode, Colors, getColorMode } from "./colors";
+import { FontFamily } from "./fonts";
 
 const themeFonts: Theme["fonts"] = {
   regular: {
-    fontFamily: "Google Sans Flex",
+    fontFamily: FontFamily.plain,
     fontWeight: "400",
   },
   medium: {
-    fontFamily: "Google Sans Flex",
+    fontFamily: FontFamily.plain,
     fontWeight: "500",
   },
   bold: {
-    fontFamily: "Google Sans Flex",
+    fontFamily: FontFamily.plain,
     fontWeight: "600",
   },
   heavy: {
-    fontFamily: "Google Sans Flex",
+    fontFamily: FontFamily.plain,
     fontWeight: "700",
   },
 };

@@ -6,7 +6,7 @@ describe("getNavigationTheme", () => {
   test.each<[ColorSchemeName, boolean]>([
     ["dark", true],
     ["light", false],
-    ["unspecified", true],
+    ["unspecified", false],
   ])("getNavigationTheme(%s).dark is %s", (scheme, expected) => {
     expect(getNavigationTheme(scheme).dark).toBe(expected);
   });
