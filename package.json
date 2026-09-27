@@ -1,7 +1,7 @@
 {
   "name": "notes-and-lists",
   "main": "expo-router/entry",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "@expo-google-fonts/google-sans-flex": "^0.4.5",
     "@expo/ui": "~57.0.20",
