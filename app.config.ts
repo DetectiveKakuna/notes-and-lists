@@ -2,7 +2,7 @@ import "tsx/cjs"; // must load before any .ts imports
 
 import { type ExpoConfig } from "expo/config";
 import { Colors } from "./src/theme/colors";
-import { FontFamily } from "./src/theme/fonts";
+import { FontFamily } from "./src/theme/typography";
 
 const config: ExpoConfig = {
   name: "Notes and Lists",

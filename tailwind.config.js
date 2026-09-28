@@ -1,17 +1,26 @@
 const { Colors } = require("./src/theme/colors");
-const { FontFamily } = require("./src/theme/fonts");
+const { FontFamily, TypeScale } = require("./src/theme/typography");
+const { toKebabCase } = require("./src/lib/strings");
 
-const toKebabCase = (camelCase) =>
-  camelCase.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`);
-
-const toVars = (set) =>
+const toVars = (mode) =>
   Object.fromEntries(
-    Object.entries(set).map(([k, v]) => [`--${toKebabCase(k)}`, v]),
+    Object.entries(mode).map(([k, v]) => [`--${toKebabCase(k)}`, v]),
   );
 
-const toColors = (set) =>
+const toColors = (mode) =>
   Object.fromEntries(
-    Object.keys(set).map((k) => [toKebabCase(k), `var(--${toKebabCase(k)})`]),
+    Object.keys(mode).map((k) => [toKebabCase(k), `var(--${toKebabCase(k)})`]),
+  );
+
+const toFontSizes = (scale) =>
+  Object.fromEntries(
+    Object.entries(scale).map(([k, v]) => [
+      toKebabCase(k),
+      [
+        `${v.size}px`,
+        { lineHeight: `${v.lineHeight}px`, fontWeight: `${v.weight}` },
+      ],
+    ]),
   );
 
 /** @type {import('tailwindcss').Config} */
@@ -22,8 +31,10 @@ module.exports = {
     extend: {
       colors: toColors(Colors.light),
       fontFamily: {
-        sans: [FontFamily.plain, "sans-serif"],
+        plain: [FontFamily.plain, "sans-serif"],
+        brand: [FontFamily.brand, "sans-serif"],
       },
+      fontSize: toFontSizes(TypeScale),
     },
   },
   plugins: [
@@ -32,5 +43,10 @@ module.exports = {
         ":root": toVars(Colors.light),
         "@media (prefers-color-scheme: dark)": { ":root": toVars(Colors.dark) },
       }),
+  ],
+  safelist: [
+    ...Object.keys(TypeScale).map((k) => `text-${toKebabCase(k)}`),
+    "font-brand",
+    "font-plain",
   ],
 };

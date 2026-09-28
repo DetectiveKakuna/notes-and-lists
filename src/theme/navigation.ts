@@ -1,7 +1,7 @@
 import { type Theme } from "expo-router";
 import { type ColorSchemeName } from "react-native";
 import { type ColorMode, Colors, getColorMode } from "./colors";
-import { FontFamily } from "./fonts";
+import { FontFamily } from "./typography";
 
 const themeFonts: Theme["fonts"] = {
   regular: {
