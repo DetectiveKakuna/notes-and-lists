@@ -2,17 +2,31 @@ import { cn } from "@/lib/utils";
 
 describe("cn", () => {
   test("a passed color replaces the default color", () => {
-    expect(cn("font-sans text-on-surface", "text-primary")).toBe(
-      "font-sans text-primary",
+    expect(cn("font-plain text-on-surface", "text-primary")).toBe(
+      "font-plain text-primary",
     );
   });
 
-  test("a size and a color are both kept", () => {
-    expect(cn("text-on-surface", "text-lg")).toBe("text-on-surface text-lg");
+  test.each([
+    ["text-on-surface", "text-lg"],
+    ["text-body-large", "text-on-surface"],
+    ["font-plain", "font-bold"],
+  ])("keeps %s and %s because they set different properties", (a, b) => {
+    expect(cn(a, b)).toBe(`${a} ${b}`);
   });
 
-  test("a font family and a font weight are both kept", () => {
-    expect(cn("font-sans", "font-bold")).toBe("font-sans font-bold");
+  test("a later type scale size replaces an earlier one", () => {
+    expect(cn("text-body-large", "text-title-large")).toBe("text-title-large");
+  });
+
+  test("a later type scale size replaces an earlier font weight", () => {
+    expect(cn("font-bold", "text-title-medium")).toBe("text-title-medium");
+  });
+
+  test("a later font weight is kept after a type scale size", () => {
+    expect(cn("text-title-medium", "font-bold")).toBe(
+      "text-title-medium font-bold",
+    );
   });
 
   test("false and undefined inputs are ignored", () => {

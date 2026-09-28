@@ -1,6 +1,21 @@
+import { toKebabCase } from "@/lib/strings";
+import { TypeScale } from "@/theme/typography";
 import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
+
+const appTwMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      "font-size": [
+        { text: Object.keys(TypeScale).map((k) => toKebabCase(k)) },
+      ],
+    },
+    conflictingClassGroups: {
+      "font-size": ["font-weight"],
+    },
+  },
+});
 
 export function cn(...inputs: ClassValue[]): string {
-  return twMerge(clsx(inputs));
+  return appTwMerge(clsx(inputs));
 }
