@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 describe("cn", () => {
   test("a passed color replaces the default color", () => {
-    expect(cn("font-plain text-on-surface", "text-primary")).toBe(
+    expect(cn("text-on-surface font-plain", "text-primary")).toBe(
       "font-plain text-primary",
     );
   });
