@@ -1,7 +1,7 @@
 export type FontRole = "brand" | "plain";
 
 export const FontFamily: Record<FontRole, string> = {
-  brand: "Google Sans Flex",
+  brand: "Space Grotesk",
   plain: "Google Sans Flex",
 };
 

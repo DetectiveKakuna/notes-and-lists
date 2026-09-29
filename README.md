@@ -101,9 +101,9 @@ npx expo start
 From there you can open the app in a
 [development build](https://docs.expo.dev/develop/development-builds/introduction/),
 an [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/),
-or [Expo Go](https://expo.dev/go). Expo Go runs the app, but the Google Sans
-Flex font and the splash screen are compiled into the native app, so they only
-appear in development and release builds.
+or [Expo Go](https://expo.dev/go). Expo Go runs the app, but the custom fonts
+and the splash screen are compiled into the native app, so they only appear in
+development and release builds.
 
 | Command                   | What it does                                                                                   |
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
@@ -133,12 +133,12 @@ src/
   app/              Expo Router routes: screens and layouts
   components/       Shared components, such as AppText
   hooks/            Custom hooks, such as useColors
-  lib/              Small shared utilities, such as cn
-  theme/            Color roles and the navigation theme
+  lib/              Small shared utilities, such as cn and toKebabCase
+  theme/            Color roles, typography, and the navigation theme
   global.css        Tailwind entry point
 __tests__/          Unit tests, mirroring the src/ folders
 app.config.ts       Expo app configuration
-tailwind.config.js  Tailwind theme, generated from src/theme/colors.ts
+tailwind.config.js  Tailwind theme, generated from src/theme/
 ```
 
 ## Design and theming
@@ -171,19 +171,43 @@ is also made in one place, `getColorMode()` in the same file. Everything else
 looks its values up by mode, and the two navigation themes are built once and
 reused.
 
-Text uses Google Sans Flex in weights 400 to 700, embedded at build time with
-the `expo-font` config plugin rather than loaded at startup. Each static weight
-is about 130 KB, compared with about 2 MB for each weight of the original
-Google Sans. It's available as the `font-sans` class, and the `AppText`
-component applies it along with the default text color.
+### Typography
+
+Typography follows Material 3 and lives in
+[src/theme/typography.ts](src/theme/typography.ts):
+
+- **Two font roles.** `brand` is for large, expressive text (display and
+  headline styles) and uses Space Grotesk. `plain` is for everything else and
+  uses Google Sans Flex. They're available as the `font-brand` and
+  `font-plain` classes, and because code refers to the roles rather than the
+  fonts, swapping either font is a one-line change.
+- **Embedded, not downloaded.** Both fonts are built into the app with the
+  `expo-font` config plugin rather than loaded at startup. Material 3's display
+  and headline styles only use weight 400, so Space Grotesk needs a single file
+  (about 85 KB). Google Sans Flex ships weights 400 to 700 at about 130 KB each,
+  compared with about 2 MB for each weight of the original Google Sans.
+- **The type scale.** `TypeScale` defines Material 3's 15 text styles (display,
+  headline, title, body, and label, each in large, medium, and small), with
+  size, line height, weight, and font role. Tailwind generates a class for
+  each, such as `text-body-large`, which sets size, line height, and weight
+  together.
+
+`AppText` takes a `variant` prop naming one of those styles, defaulting to
+`bodyLarge`: `<AppText variant="titleMedium">Groceries</AppText>`. It applies
+the style's font role and size along with the default text color.
+
+The type scale is the only list of text styles in the code. The Tailwind font
+sizes, the list of classes Tailwind always generates (its `safelist`), and the
+size names `cn()` recognizes are all derived from it, so adding or adjusting a
+style is a one-line edit.
 
 Styling goes through classes first. The classes passed to `AppText` are
 combined with its defaults by a small `cn()` helper (`clsx` plus
 `tailwind-merge`). When two classes conflict, the one passed in wins. For
-example, `className="text-primary"` replaces the default text color, while
-`text-lg` sets the size and keeps the default color. `AppText` still accepts a
-`style` prop, kept for values only known at runtime, such as a color that
-comes from a note's data.
+example, `className="text-primary"` replaces the default text color,
+`text-title-large` replaces the variant's size, and `font-bold` overrides only
+its weight. `AppText` still accepts a `style` prop, kept for values only known
+at runtime, such as a color that comes from a note's data.
 
 ## Tech stack
 
@@ -196,7 +220,8 @@ comes from a note's data.
 - React Native Reanimated for animation
 - [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
   the stable release rather than the v5 release candidate
-- Google Sans Flex, embedded at build time with the `expo-font` config plugin
+- Space Grotesk for headlines and Google Sans Flex for everything else, both
+  embedded at build time with the `expo-font` config plugin
 
 ### Tooling and workflow
 
@@ -209,7 +234,8 @@ comes from a note's data.
   specific version
 - Jest (with the `jest-expo` preset) and React Native Testing Library for unit
   tests, covering the color roles, the light and dark fallback, the navigation
-  theme, and the `cn()` merge rules
+  theme, the `cn()` merge rules (including the type scale sizes), and
+  `AppText`'s variants and props
 - GitHub Actions CI runs on every pull request and push to `develop`: Expo
   dependency check, formatting check, lint, type check, and tests
 - `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,

@@ -29,6 +29,15 @@ const config: ExpoConfig = {
         android: {
           fonts: [
             {
+              fontFamily: FontFamily.brand,
+              fontDefinitions: [
+                {
+                  path: "./node_modules/@expo-google-fonts/space-grotesk/400Regular/SpaceGrotesk_400Regular.ttf",
+                  weight: 400,
+                },
+              ],
+            },
+            {
               fontFamily: FontFamily.plain,
               fontDefinitions: [
                 {
