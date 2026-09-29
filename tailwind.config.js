@@ -2,17 +2,19 @@ const { Colors } = require("./src/theme/colors");
 const { FontFamily, TypeScale } = require("./src/theme/typography");
 const { toKebabCase } = require("./src/lib/strings");
 
-const toVars = (mode) =>
+function toVars(mode) {
   Object.fromEntries(
     Object.entries(mode).map(([k, v]) => [`--${toKebabCase(k)}`, v]),
   );
+}
 
-const toColors = (mode) =>
+function toColors(mode) {
   Object.fromEntries(
     Object.keys(mode).map((k) => [toKebabCase(k), `var(--${toKebabCase(k)})`]),
   );
+}
 
-const toFontSizes = (scale) =>
+function toFontSizes(scale) {
   Object.fromEntries(
     Object.entries(scale).map(([k, v]) => [
       toKebabCase(k),
@@ -22,6 +24,7 @@ const toFontSizes = (scale) =>
       ],
     ]),
   );
+}
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
