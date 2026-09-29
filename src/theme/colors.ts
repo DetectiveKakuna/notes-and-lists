@@ -1,6 +1,6 @@
 import { type ColorSchemeName } from "react-native";
 
-type HexColor = `#${string}`;
+export type HexColor = `#${string}`;
 
 export type ColorRoles = Record<
   | "surface"
