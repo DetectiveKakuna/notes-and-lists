@@ -9,7 +9,7 @@ const config: ExpoConfig = {
   description: "Stay organized using notes and lists!",
   slug: "notes-and-lists",
   owner: "floof-n-liz",
-  version: "0.1.0",
+  version: "0.1.1",
   platforms: ["android"],
   githubUrl: "https://github.com/DetectiveKakuna/notes-and-lists",
   orientation: "portrait",
