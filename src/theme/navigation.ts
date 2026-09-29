@@ -3,7 +3,7 @@ import { type ColorSchemeName } from "react-native";
 import { type ColorMode, Colors, getColorMode } from "./colors";
 import { FontFamily } from "./typography";
 
-const themeFonts: Theme["fonts"] = {
+const ThemeFonts: Theme["fonts"] = {
   regular: {
     fontFamily: FontFamily.plain,
     fontWeight: "400",
@@ -34,15 +34,15 @@ function toNavigationTheme(mode: ColorMode): Theme {
       border: colors.outlineVariant,
       notification: colors.error,
     },
-    fonts: themeFonts,
+    fonts: ThemeFonts,
   };
 }
 
-const navigationThemes: Record<ColorMode, Theme> = {
+const NavigationThemes: Record<ColorMode, Theme> = {
   light: toNavigationTheme("light"),
   dark: toNavigationTheme("dark"),
 };
 
 export function getNavigationTheme(scheme: ColorSchemeName): Theme {
-  return navigationThemes[getColorMode(scheme)];
+  return NavigationThemes[getColorMode(scheme)];
 }
