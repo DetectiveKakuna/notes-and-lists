@@ -1,11 +1,12 @@
 import { type Note } from "@/notes/types";
 
-export const DevelopmentNotes: Note[] = [
+export const SeedData: Note[] = [
   {
     id: "note1",
     ownerId: "owner1",
     sharedIds: [],
     title: "Note 1 Title",
+    order: 3,
     createdAt: 1790705173000,
     updatedAt: 1790705173000,
     type: "checklist",
@@ -65,7 +66,7 @@ export const DevelopmentNotes: Note[] = [
     id: "note2",
     ownerId: "owner1",
     sharedIds: ["owner2"],
-    title: "Note 2 Title",
+    order: 2,
     createdAt: 1790705173001,
     updatedAt: 1790705173001,
     type: "category",
@@ -190,6 +191,7 @@ export const DevelopmentNotes: Note[] = [
     ownerId: "owner1",
     sharedIds: ["owner2", "owner 3"],
     title: "Note 3 Title",
+    order: 4,
     createdAt: 1790705173002,
     updatedAt: 1790705173002,
     type: "text",
@@ -200,6 +202,7 @@ export const DevelopmentNotes: Note[] = [
     ownerId: "owner1",
     sharedIds: [],
     title: "Note 4 Title",
+    order: 1,
     createdAt: 1790705173003,
     updatedAt: 1790705173003,
     type: "text",

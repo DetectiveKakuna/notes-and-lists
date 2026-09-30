@@ -1,15 +1,16 @@
 import { type EpochMs } from "@/lib/time";
 import { type HexColor } from "@/theme/colors";
 
-type NoteBase = {
+export type NoteBase = {
   id: string;
   ownerId: string;
   sharedIds: string[];
-  title: string;
+  title?: string;
+  order: number;
   createdAt: EpochMs;
   updatedAt: EpochMs;
 };
-type ItemBase = {
+export type ItemBase = {
   text: string;
   checked: boolean;
   order: number;
