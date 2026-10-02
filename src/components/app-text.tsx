@@ -1,13 +1,9 @@
-import { toKebabCase } from "@/lib/strings";
 import { cn } from "@/lib/utils";
-import { type TextVariant, TypeScale } from "@/theme/typography";
+import { getTextVariantClasses } from "@/theme/text-variant";
+import { type TextVariant } from "@/theme/typography";
 import { Text, type TextProps } from "react-native";
 
 type Props = TextProps & { variant?: TextVariant };
-
-export function getTextVariantClasses(variant: TextVariant): string {
-  return `font-${TypeScale[variant].role} text-${toKebabCase(variant)}`;
-}
 
 export function AppText({
   variant = "bodyLarge",
