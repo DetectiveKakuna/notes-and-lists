@@ -4,7 +4,9 @@
 
 > **⚠️ Work in progress.** This is a personal project in its early stages. The
 > app shell is in place: navigation, a light and dark theme, and the tooling
-> around it. None of the note features below are implemented yet. Expect the
+> around it. The first note screens are being built on sample data: a grid of
+> note cards, and a checklist screen that shows a note's items but can't edit
+> or save them yet. None of the features below work end to end. Expect the
 > code, data model, and everything else to change without warning.
 
 A mobile-first notes and lists app built with [Expo](https://expo.dev) and
@@ -131,9 +133,10 @@ building.
 ```
 src/
   app/              Expo Router routes: screens and layouts
-  components/       Shared components, such as AppText
+  components/       Shared components, such as AppText and AppTextInput
   hooks/            Custom hooks, such as useColors
   lib/              Small shared utilities, such as cn and toKebabCase
+  notes/            Note types, sorting, sample data, and note components
   theme/            Color roles, typography, and the navigation theme
   global.css        Tailwind entry point
 __tests__/          Unit tests, mirroring the src/ folders
@@ -159,9 +162,8 @@ and everything else reads from that file:
 - **Navigation.** The React Navigation theme uses the same roles for screen
   backgrounds, headers, and the drawer.
 - **Color values in code.** For props that need an actual color rather than a
-  class, such as an `ActivityIndicator`'s `color`, the `useColors()` hook
-  returns the current light or dark set and updates when the system setting
-  changes.
+  class, such as an icon's `tintColor`, the `useColors()` hook returns the
+  current light or dark set and updates when the system setting changes.
 - **Splash screen.** [app.config.ts](app.config.ts) imports the `surface`
   colors for the light and dark splash backgrounds. Expo's config loader can't
   import other TypeScript files on its own, so `tsx` handles that import.
@@ -195,6 +197,8 @@ Typography follows Material 3 and lives in
 `AppText` takes a `variant` prop naming one of those styles, defaulting to
 `bodyLarge`: `<AppText variant="titleMedium">Groceries</AppText>`. It applies
 the style's font role and size along with the default text color.
+`AppTextInput` takes the same `variant` prop and does the same for editable
+text.
 
 The type scale is the only list of text styles in the code. The Tailwind font
 sizes, the list of classes Tailwind always generates (its `safelist`), and the
@@ -209,6 +213,13 @@ example, `className="text-primary"` replaces the default text color,
 its weight. `AppText` still accepts a `style` prop, kept for values only known
 at runtime, such as a color that comes from a note's data.
 
+### Spacing
+
+Spacing follows Material 3's 4dp grid. By default NativeWind makes each
+Tailwind spacing step 3.5dp on a phone, so [metro.config.js](metro.config.js)
+sets `inlineRem: 16`. Each step is then 4dp, the same as Tailwind on the web:
+`p-3` is 12dp, and `w-12` is 48dp, Android's minimum touch target.
+
 ## Tech stack
 
 - Expo SDK 57 / React Native 0.86
@@ -217,6 +228,8 @@ at runtime, such as a color that comes from a note's data.
 - [@expo/ui](https://docs.expo.dev/versions/v57.0.0/sdk/ui/) for native Jetpack
   Compose controls, planned for things like reminder date pickers and bottom
   sheets
+- [expo-symbols](https://docs.expo.dev/versions/v57.0.0/sdk/symbols/) for
+  icons, drawn from Google's Material Symbols on Android
 - React Native Reanimated for animation
 - [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
   the stable release rather than the v5 release candidate
@@ -234,8 +247,9 @@ at runtime, such as a color that comes from a note's data.
   specific version
 - Jest (with the `jest-expo` preset) and React Native Testing Library for unit
   tests, covering the color roles, the light and dark fallback, the navigation
-  theme, the `cn()` merge rules (including the type scale sizes), and
-  `AppText`'s variants and props
+  theme, the `cn()` merge rules (including the type scale sizes), the text
+  variants, the `AppText` and `AppTextInput` components, note and item
+  sorting, and the checklist's sections and rows
 - GitHub Actions CI runs on every pull request and push to `develop`: Expo
   dependency check, formatting check, lint, type check, and tests
 - `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,
