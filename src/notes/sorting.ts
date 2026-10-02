@@ -1,6 +1,6 @@
-import { NoteBase, type ItemBase } from "@/notes/types";
+import { type ListItemBase, type NoteBase } from "@/notes/types";
 
-export function compareItems(a: ItemBase, b: ItemBase): number {
+export function compareItems(a: ListItemBase, b: ListItemBase): number {
   return (
     Number(a.checked) - Number(b.checked) ||
     a.order - b.order ||

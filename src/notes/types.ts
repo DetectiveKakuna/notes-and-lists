@@ -10,7 +10,7 @@ export type NoteBase = {
   createdAt: EpochMs;
   updatedAt: EpochMs;
 };
-export type ItemBase = {
+export type ListItemBase = {
   text: string;
   checked: boolean;
   order: number;
@@ -21,9 +21,10 @@ export type Category = {
   color: HexColor;
   order: number;
 };
+export type WithId<T> = T & { id: string };
 
-export type ChecklistItem = ItemBase & { indent: 0 | 1 };
-export type CategoryItem = ItemBase & { categoryId?: string };
+export type ChecklistItem = ListItemBase & { indent: 0 | 1 };
+export type CategoryListItem = ListItemBase & { categoryId?: string };
 
 export type TextNote = NoteBase & {
   type: "text";
@@ -36,7 +37,7 @@ export type ChecklistNote = NoteBase & {
 export type CategoryNote = NoteBase & {
   type: "category";
   categories: Record<string, Category>;
-  items: Record<string, CategoryItem>;
+  items: Record<string, CategoryListItem>;
 };
 
 export type Note = TextNote | ChecklistNote | CategoryNote;

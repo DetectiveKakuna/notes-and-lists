@@ -1,7 +1,7 @@
 import { compareItems, compareNotes } from "@/notes/sorting";
-import { type ItemBase, type NoteBase } from "@/notes/types";
+import { type ListItemBase, type NoteBase } from "@/notes/types";
 
-function item(overrides: Partial<ItemBase> = {}): ItemBase {
+function item(overrides: Partial<ListItemBase> = {}): ListItemBase {
   return {
     text: "Item",
     checked: false,
