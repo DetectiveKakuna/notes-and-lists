@@ -1,12 +1,12 @@
-import { useNotes } from "@/hooks/use-notes";
 import { NoteCard } from "@/notes/note-card";
+import { useNotes } from "@/notes/use-notes";
 import { FlatList, View } from "react-native";
 
-export default function Index() {
+export default function NotesOverview() {
   const notes = useNotes();
 
   return (
-    <View className="m-1 flex">
+    <View className="m-1 flex-1">
       <FlatList
         data={notes}
         renderItem={({ item }) => <NoteCard note={item} className="flex-1" />}
