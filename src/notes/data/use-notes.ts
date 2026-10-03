@@ -1,11 +1,9 @@
-import { SeedData } from "@/notes/data/seed-data";
-import { compareNotes } from "@/notes/sorting";
+import { getNotes, subscribeToNotes } from "@/notes/data/notes-store";
 import { type Note } from "@/notes/types";
-
-const notes = [...SeedData].sort(compareNotes);
+import { useSyncExternalStore } from "react";
 
 export function useNotes(): Note[] {
-  return notes;
+  return useSyncExternalStore(subscribeToNotes, getNotes);
 }
 
 export function useNote(noteId: string): Note | undefined {
