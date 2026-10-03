@@ -1,5 +1,5 @@
-import { useCheckedHidden } from "@/notes/use-checked-hidden";
-import { setCheckedHidden } from "@/notes/view-settings";
+import { useCheckedHidden } from "@/notes/data/use-checked-hidden";
+import { setCheckedHidden } from "@/notes/data/view-settings";
 import { act, renderHook } from "@testing-library/react-native";
 
 jest.mock("expo-sqlite/localStorage/install", () => ({}));

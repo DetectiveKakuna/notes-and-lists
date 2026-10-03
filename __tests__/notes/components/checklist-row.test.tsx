@@ -1,4 +1,4 @@
-import { ChecklistRow } from "@/notes/checklist-row";
+import { ChecklistRow } from "@/notes/components/checklist-row";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import { type ComponentProps } from "react";
 

@@ -1,5 +1,5 @@
-import { NoteCard } from "@/notes/note-card";
-import { useNotes } from "@/notes/use-notes";
+import { NoteCard } from "@/notes/components/note-card";
+import { useNotes } from "@/notes/data/use-notes";
 import { FlatList, View } from "react-native";
 
 export default function NotesOverview() {

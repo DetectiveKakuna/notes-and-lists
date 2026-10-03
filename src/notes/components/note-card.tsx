@@ -1,6 +1,6 @@
 import { AppText } from "@/components/app-text";
-import { cn } from "@/lib/utils";
 import { type Note } from "@/notes/types";
+import { cn } from "@/utils/cn";
 import { Link } from "expo-router";
 import { Pressable, type PressableProps } from "react-native";
 

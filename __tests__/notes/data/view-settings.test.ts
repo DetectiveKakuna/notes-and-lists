@@ -2,7 +2,7 @@ import {
   getCheckedHidden,
   setCheckedHidden,
   subscribeCheckedHidden,
-} from "@/notes/view-settings";
+} from "@/notes/data/view-settings";
 
 jest.mock("expo-sqlite/localStorage/install", () => ({}));
 

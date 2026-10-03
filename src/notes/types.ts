@@ -1,5 +1,5 @@
-import { type EpochMs } from "@/lib/time";
 import { type HexColor } from "@/theme/colors";
+import { type EpochMs } from "@/utils/time";
 
 export type NoteBase = {
   id: string;

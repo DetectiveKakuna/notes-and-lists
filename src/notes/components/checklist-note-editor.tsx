@@ -1,14 +1,14 @@
 import { Collapsible } from "@/components/collapsible";
 import { useColors } from "@/hooks/use-colors";
 import { getChecklistSections } from "@/notes/checklist-operations";
-import { ChecklistRow } from "@/notes/checklist-row";
+import { ChecklistRow } from "@/notes/components/checklist-row";
+import { useCheckedHidden } from "@/notes/data/use-checked-hidden";
+import { setCheckedHidden } from "@/notes/data/view-settings";
 import {
   type ChecklistItem,
   type ChecklistNote,
   type WithId,
 } from "@/notes/types";
-import { useCheckedHidden } from "@/notes/use-checked-hidden";
-import { setCheckedHidden } from "@/notes/view-settings";
 import { ScrollView } from "react-native";
 
 type Props = { note: ChecklistNote };

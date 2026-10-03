@@ -1,7 +1,7 @@
 // @ts-check
 const { Colors } = require("./src/theme/colors");
 const { FontFamily, TypeScale } = require("./src/theme/typography");
-const { toKebabCase } = require("./src/lib/strings");
+const { toKebabCase } = require("./src/utils/strings");
 const plugin = require("tailwindcss/plugin");
 
 /** @param {Record<string, string>} mode */

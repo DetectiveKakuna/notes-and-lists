@@ -135,9 +135,11 @@ src/
   app/              Expo Router routes: screens and layouts
   components/       Shared components, such as AppText and Collapsible
   hooks/            Custom hooks, such as useColors
-  lib/              Small shared utilities, such as cn and toKebabCase
-  notes/            Note types, sorting, sample data, and note components
+  notes/            Note types, sorting, and checklist logic
+    components/     Note UI, such as NoteCard and ChecklistRow
+    data/           Reading and saving notes and per-note settings
   theme/            Color roles, typography, and the navigation theme
+  utils/            Small shared helpers, such as cn and toKebabCase
   global.css        Tailwind entry point
 __tests__/          Unit tests, mirroring the src/ folders
 app.config.ts       Expo app configuration

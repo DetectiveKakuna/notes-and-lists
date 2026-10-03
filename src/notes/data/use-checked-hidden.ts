@@ -1,7 +1,7 @@
 import {
   getCheckedHidden,
   subscribeCheckedHidden,
-} from "@/notes/view-settings";
+} from "@/notes/data/view-settings";
 import { useSyncExternalStore } from "react";
 
 export function useCheckedHidden(noteId: string): boolean {

@@ -1,5 +1,5 @@
-import { toKebabCase } from "@/lib/strings";
 import { TypeScale } from "@/theme/typography";
+import { toKebabCase } from "@/utils/strings";
 import { type ClassValue, clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 

@@ -1,6 +1,6 @@
 import { AppTextInput } from "@/components/app-text-input";
 import { useColors } from "@/hooks/use-colors";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 import { SymbolView } from "expo-symbols";
 import { Pressable, View, type ViewProps } from "react-native";
 

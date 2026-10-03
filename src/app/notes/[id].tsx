@@ -1,5 +1,5 @@
-import { ChecklistNoteEditor } from "@/notes/checklist-note-editor";
-import { useNote } from "@/notes/use-notes";
+import { ChecklistNoteEditor } from "@/notes/components/checklist-note-editor";
+import { useNote } from "@/notes/data/use-notes";
 import { useLocalSearchParams } from "expo-router";
 
 export default function NoteScreen() {

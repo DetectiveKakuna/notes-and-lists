@@ -1,4 +1,4 @@
-import { SeedData } from "@/notes/seed-data";
+import { SeedData } from "@/notes/data/seed-data";
 import { compareNotes } from "@/notes/sorting";
 import { type Note } from "@/notes/types";
 
