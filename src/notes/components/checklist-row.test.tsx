@@ -10,7 +10,7 @@ async function renderRow(overrides: Partial<Props> = {}) {
       checked={false}
       text="Milk"
       onPressDrag={jest.fn()}
-      onToggle={jest.fn()}
+      onToggleCheck={jest.fn()}
       onChangeText={jest.fn()}
       {...overrides}
     />,
@@ -49,7 +49,7 @@ describe("ChecklistRow", () => {
 
   test("calls onToggle when the checkbox is pressed", async () => {
     const onToggle = jest.fn();
-    await renderRow({ onToggle });
+    await renderRow({ onToggleCheck: onToggle });
 
     await fireEvent.press(screen.getByRole("checkbox"));
 

@@ -8,7 +8,7 @@ type Props = ViewProps & {
   checked: boolean;
   text: string;
   onPressDrag: () => void;
-  onToggle: () => void;
+  onToggleCheck: () => void;
   onChangeText: (text: string) => void;
 };
 
@@ -17,7 +17,7 @@ export function ChecklistRow({
   className,
   text,
   onPressDrag,
-  onToggle,
+  onToggleCheck,
   onChangeText,
   ...rest
 }: Props) {
@@ -39,7 +39,7 @@ export function ChecklistRow({
         </Pressable>
       )}
       <Pressable
-        onPress={onToggle}
+        onPress={onToggleCheck}
         className="p-3"
         role="checkbox"
         aria-checked={checked}

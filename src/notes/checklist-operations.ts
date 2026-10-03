@@ -4,6 +4,7 @@ import {
   type ChecklistNote,
   type WithId,
 } from "@/notes/types";
+import { type EpochMs } from "@/utils/time";
 
 export type ChecklistSections = {
   unchecked: WithId<ChecklistItem>[];
@@ -22,4 +23,23 @@ export function getChecklistSections(note: ChecklistNote): ChecklistSections {
   const unchecked = items.filter((item) => !item.checked);
 
   return { unchecked, checked };
+}
+
+export function toggleItemCheckmark(
+  note: ChecklistNote,
+  itemId: string,
+  epochNow: EpochMs,
+): ChecklistNote {
+  const item = note.items[itemId];
+
+  return item
+    ? {
+        ...note,
+        updatedAt: epochNow,
+        items: {
+          ...note.items,
+          [itemId]: { ...item, checked: !item.checked },
+        },
+      }
+    : note;
 }
