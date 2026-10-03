@@ -141,10 +141,15 @@ src/
   theme/            Color roles, typography, and the navigation theme
   utils/            Small shared helpers, such as cn and toKebabCase
   global.css        Tailwind entry point
-__tests__/          Unit tests, mirroring the src/ folders
 app.config.ts       Expo app configuration
 tailwind.config.js  Tailwind theme, generated from src/theme/
 ```
+
+Unit tests sit next to the file they test, such as `cn.test.ts` beside
+`cn.ts`, so a test moves along with its file. The workspace settings in
+[.vscode/settings.json](.vscode/settings.json) turn on VS Code's file nesting,
+which folds each test under its file in the Explorer. Tests never go in
+`src/app/`, because Expo Router treats every file there as a route.
 
 ## Design and theming
 
