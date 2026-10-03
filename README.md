@@ -133,7 +133,7 @@ building.
 ```
 src/
   app/              Expo Router routes: screens and layouts
-  components/       Shared components, such as AppText and AppTextInput
+  components/       Shared components, such as AppText and Collapsible
   hooks/            Custom hooks, such as useColors
   lib/              Small shared utilities, such as cn and toKebabCase
   notes/            Note types, sorting, sample data, and note components
@@ -230,6 +230,10 @@ sets `inlineRem: 16`. Each step is then 4dp, the same as Tailwind on the web:
   sheets
 - [expo-symbols](https://docs.expo.dev/versions/v57.0.0/sdk/symbols/) for
   icons, drawn from Google's Material Symbols on Android
+- [expo-sqlite](https://docs.expo.dev/versions/v57.0.0/sdk/sqlite/)'s
+  `localStorage` for small settings kept on the device, such as whether a
+  note's checked items are hidden. They stay on that phone rather than syncing
+  with the note.
 - React Native Reanimated for animation
 - [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
   the stable release rather than the v5 release candidate
@@ -248,8 +252,9 @@ sets `inlineRem: 16`. Each step is then 4dp, the same as Tailwind on the web:
 - Jest (with the `jest-expo` preset) and React Native Testing Library for unit
   tests, covering the color roles, the light and dark fallback, the navigation
   theme, the `cn()` merge rules (including the type scale sizes), the text
-  variants, the `AppText` and `AppTextInput` components, note and item
-  sorting, and the checklist's sections and rows
+  variants, the `AppText`, `AppTextInput`, and `Collapsible` components, note
+  and item sorting, the checklist's sections and rows, and the per-note
+  settings saved on the device
 - GitHub Actions CI runs on every pull request and push to `develop`: Expo
   dependency check, formatting check, lint, type check, and tests
 - `develop` is the integration branch. Work happens on `feature/*`, `hotfix/*`,
