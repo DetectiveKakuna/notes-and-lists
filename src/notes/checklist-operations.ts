@@ -25,6 +25,26 @@ export function getChecklistSections(note: ChecklistNote): ChecklistSections {
   return { unchecked, checked };
 }
 
+export function updateItemText(
+  note: ChecklistNote,
+  itemId: string,
+  newText: string,
+  epochNow: EpochMs,
+): ChecklistNote {
+  const item = note.items[itemId];
+
+  return item
+    ? {
+        ...note,
+        updatedAt: epochNow,
+        items: {
+          ...note.items,
+          [itemId]: { ...item, text: newText },
+        },
+      }
+    : note;
+}
+
 export function toggleItemCheckmark(
   note: ChecklistNote,
   itemId: string,

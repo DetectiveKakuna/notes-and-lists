@@ -3,6 +3,7 @@ import { useColors } from "@/hooks/use-colors";
 import {
   getChecklistSections,
   toggleItemCheckmark,
+  updateItemText,
 } from "@/notes/checklist-operations";
 import { ChecklistRow } from "@/notes/components/checklist-row";
 import { updateNote } from "@/notes/data/notes-store";
@@ -18,7 +19,11 @@ import { ScrollView } from "react-native";
 
 type Props = { note: ChecklistNote };
 
-function renderRow(item: WithId<ChecklistItem>, onToggleCheck: () => void) {
+function renderRow(
+  item: WithId<ChecklistItem>,
+  onToggleCheck: () => void,
+  onChangeText: (text: string) => void,
+) {
   return (
     <ChecklistRow
       key={item.id}
@@ -27,7 +32,7 @@ function renderRow(item: WithId<ChecklistItem>, onToggleCheck: () => void) {
       text={item.text}
       onPressDrag={() => alert("Drag")} // TODO: reorder by dragging
       onToggleCheck={onToggleCheck}
-      onChangeText={() => {}} // TODO: save the new text
+      onChangeText={onChangeText}
     />
   );
 }
@@ -41,10 +46,18 @@ export function ChecklistNoteEditor({ note }: Props) {
     updateNote(note.id, toggleItemCheckmark(note, itemId, epochNow));
   }
 
+  function onChangeText(itemId: string, text: string, epochNow: EpochMs) {
+    updateNote(note.id, updateItemText(note, itemId, text, epochNow));
+  }
+
   return (
     <ScrollView className="m-1">
       {sections.unchecked.map((item) =>
-        renderRow(item, () => onToggleCheck(item.id, Date.now())),
+        renderRow(
+          item,
+          () => onToggleCheck(item.id, Date.now()),
+          (text) => onChangeText(item.id, text, Date.now()),
+        ),
       )}
       {sections.checked.length === 0 ? null : (
         <Collapsible
@@ -54,7 +67,11 @@ export function ChecklistNoteEditor({ note }: Props) {
           onToggle={() => setCheckedHidden(note.id, !checkedHidden)}
         >
           {sections.checked.map((item) =>
-            renderRow(item, () => onToggleCheck(item.id, Date.now())),
+            renderRow(
+              item,
+              () => onToggleCheck(item.id, Date.now()),
+              (text) => onChangeText(item.id, text, Date.now()),
+            ),
           )}
         </Collapsible>
       )}

@@ -1,6 +1,7 @@
 import {
   getChecklistSections,
   toggleItemCheckmark,
+  updateItemText,
 } from "@/notes/checklist-operations";
 import { type ChecklistItem, type ChecklistNote } from "@/notes/types";
 
@@ -88,6 +89,50 @@ describe("getChecklistSections", () => {
         milk: item({ checked: true }),
       }),
     );
+  });
+});
+
+describe("updateItemText", () => {
+  test("replaces the item's text and keeps its other fields", () => {
+    const milk = item({ text: "Milk", checked: true, order: 4, indent: 1 });
+    const note = checklist({ milk });
+
+    const updated = updateItemText(note, "milk", "Oat milk", 2_000);
+
+    expect(updated.items.milk).toEqual({ ...milk, text: "Oat milk" });
+  });
+
+  test("sets updatedAt to the time passed in", () => {
+    const note = checklist({ milk: item() });
+
+    expect(updateItemText(note, "milk", "Oat milk", 5_000).updatedAt).toBe(
+      5_000,
+    );
+  });
+
+  test("keeps the other items as the same objects", () => {
+    const eggs = item({ text: "Eggs" });
+    const note = checklist({ milk: item(), eggs });
+
+    const updated = updateItemText(note, "milk", "Oat milk", 2_000);
+
+    expect(updated.items.eggs).toBe(eggs);
+  });
+
+  test("returns a new note and leaves the original unchanged", () => {
+    const note = checklist({ milk: item({ text: "Milk" }) });
+
+    const updated = updateItemText(note, "milk", "Oat milk", 2_000);
+
+    expect(updated).not.toBe(note);
+    expect(note.items.milk.text).toBe("Milk");
+    expect(note.updatedAt).toBe(1_000);
+  });
+
+  test("returns the same note when the item does not exist", () => {
+    const note = checklist({ milk: item() });
+
+    expect(updateItemText(note, "missing", "Oat milk", 2_000)).toBe(note);
   });
 });
 
