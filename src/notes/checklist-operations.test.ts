@@ -1,4 +1,6 @@
 import {
+  createItem,
+  deleteItem,
   getChecklistSections,
   toggleItemCheckmark,
   updateItemText,
@@ -174,5 +176,85 @@ describe("toggleItemCheckmark", () => {
     const note = checklist({ milk: item() });
 
     expect(toggleItemCheckmark(note, "missing", 2_000)).toBe(note);
+  });
+});
+
+describe("createItem", () => {
+  test("adds an empty, unchecked item with the given id and order", () => {
+    const note = checklist({ milk: item() });
+
+    const created = createItem(note, "eggs", 2.5, 2_000);
+
+    expect(created.items.eggs).toEqual({
+      text: "",
+      checked: false,
+      order: 2.5,
+      indent: 0,
+      createdAt: 2_000,
+    });
+  });
+
+  test("sets updatedAt to the time passed in", () => {
+    expect(createItem(checklist(), "eggs", 1, 5_000).updatedAt).toBe(5_000);
+  });
+
+  test("keeps the existing items as the same objects", () => {
+    const milk = item({ text: "Milk" });
+    const note = checklist({ milk });
+
+    const created = createItem(note, "eggs", 2, 2_000);
+
+    expect(created.items.milk).toBe(milk);
+  });
+
+  test("returns a new note and leaves the original unchanged", () => {
+    const note = checklist({ milk: item() });
+
+    const created = createItem(note, "eggs", 2, 2_000);
+
+    expect(created).not.toBe(note);
+    expect(note.items).not.toHaveProperty("eggs");
+    expect(note.updatedAt).toBe(1_000);
+  });
+});
+
+describe("deleteItem", () => {
+  test("removes the item", () => {
+    const note = checklist({ milk: item(), eggs: item() });
+
+    const updated = deleteItem(note, "milk", 2_000);
+
+    expect(updated.items).not.toHaveProperty("milk");
+  });
+
+  test("sets updatedAt to the time passed in", () => {
+    const note = checklist({ milk: item() });
+
+    expect(deleteItem(note, "milk", 5_000).updatedAt).toBe(5_000);
+  });
+
+  test("keeps the other items as the same objects", () => {
+    const eggs = item({ text: "Eggs" });
+    const note = checklist({ milk: item(), eggs });
+
+    const updated = deleteItem(note, "milk", 2_000);
+
+    expect(updated.items.eggs).toBe(eggs);
+  });
+
+  test("returns a new note and leaves the original unchanged", () => {
+    const note = checklist({ milk: item() });
+
+    const updated = deleteItem(note, "milk", 2_000);
+
+    expect(updated).not.toBe(note);
+    expect(note.items).toHaveProperty("milk");
+    expect(note.updatedAt).toBe(1_000);
+  });
+
+  test("returns the same note when the item does not exist", () => {
+    const note = checklist({ milk: item() });
+
+    expect(deleteItem(note, "missing", 2_000)).toBe(note);
   });
 });

@@ -63,3 +63,35 @@ export function toggleItemCheckmark(
       }
     : note;
 }
+
+export function createItem(
+  note: ChecklistNote,
+  itemId: string,
+  order: number,
+  epochNow: EpochMs,
+): ChecklistNote {
+  return {
+    ...note,
+    updatedAt: epochNow,
+    items: {
+      ...note.items,
+      [itemId]: {
+        text: "",
+        checked: false,
+        order,
+        indent: 0,
+        createdAt: epochNow,
+      },
+    },
+  };
+}
+
+export function deleteItem(
+  note: ChecklistNote,
+  itemId: string,
+  epochNow: EpochMs,
+): ChecklistNote {
+  const { [itemId]: removed, ...items } = note.items;
+
+  return removed ? { ...note, updatedAt: epochNow, items } : note;
+}
