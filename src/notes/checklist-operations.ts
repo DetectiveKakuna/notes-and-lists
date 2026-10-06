@@ -95,3 +95,11 @@ export function deleteItem(
 
   return removed ? { ...note, updatedAt: epochNow, items } : note;
 }
+
+export function findNeighborId(
+  itemId: string,
+  items: WithId<ChecklistItem>[],
+): string | undefined {
+  const index = items.findIndex((item) => item.id === itemId);
+  return items[index + 1]?.id ?? items[index - 1]?.id;
+}

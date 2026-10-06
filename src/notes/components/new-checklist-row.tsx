@@ -14,7 +14,7 @@ export function NewChecklistRow({ onPress, className, ...rest }: Props) {
         className="flex-row justify-center p-3"
         onPress={onPress}
         role="button"
-        aria-label="Create item"
+        aria-label="Add item"
       >
         <SymbolView
           name={{ android: "add_circle" }}

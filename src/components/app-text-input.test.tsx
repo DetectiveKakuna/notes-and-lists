@@ -1,5 +1,7 @@
 import { AppTextInput } from "@/components/app-text-input";
 import { fireEvent, render, screen } from "@testing-library/react-native";
+import { createRef } from "react";
+import { type TextInput } from "react-native";
 
 describe("AppTextInput", () => {
   test("shows its value", async () => {
@@ -21,5 +23,12 @@ describe("AppTextInput", () => {
     await fireEvent.changeText(screen.getByDisplayValue("Milk"), "Oat milk");
 
     expect(onChangeText).toHaveBeenCalledWith("Oat milk");
+  });
+
+  test("passes its ref to the underlying TextInput", async () => {
+    const ref = createRef<TextInput>();
+    await render(<AppTextInput ref={ref} value="Milk" />);
+
+    expect(ref.current).not.toBeNull();
   });
 });

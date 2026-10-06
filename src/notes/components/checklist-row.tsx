@@ -2,12 +2,13 @@ import { AppTextInput } from "@/components/app-text-input";
 import { useColors } from "@/hooks/use-colors";
 import { cn } from "@/utils/cn";
 import { SymbolView } from "expo-symbols";
-import { useState } from "react";
-import { Pressable, View, type ViewProps } from "react-native";
+import { type Ref, useState } from "react";
+import { Pressable, TextInput, View, type ViewProps } from "react-native";
 
 type Props = ViewProps & {
   checked: boolean;
   text: string;
+  inputRef?: Ref<TextInput>;
   onPressDrag: () => void;
   onToggleCheck: () => void;
   onChangeText: (text: string) => void;
@@ -18,6 +19,7 @@ export function ChecklistRow({
   checked,
   className,
   text,
+  inputRef,
   onPressDrag,
   onToggleCheck,
   onChangeText,
@@ -69,14 +71,18 @@ export function ChecklistRow({
         scrollEnabled={false}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        ref={inputRef}
       />
       {isFocused ? (
-        <Pressable onPress={onPressDelete} className="p-3">
+        <Pressable
+          onPress={onPressDelete}
+          className="p-3"
+          role="button"
+          aria-label="Delete item"
+        >
           <SymbolView
             name={{ android: "close" }}
             tintColor={colors.onSurface}
-            role="button"
-            aria-label="Delete item"
           />
         </Pressable>
       ) : (

@@ -71,4 +71,51 @@ describe("ChecklistRow", () => {
 
     expect(screen.getByTestId("row")).toBeOnTheScreen();
   });
+
+  test("connects inputRef to the text field", async () => {
+    const inputRef = jest.fn();
+    await renderRow({ inputRef });
+
+    expect(inputRef).toHaveBeenCalledWith(expect.anything());
+  });
+
+  test("hides the delete button until the text field is focused", async () => {
+    await renderRow();
+
+    expect(
+      screen.queryByRole("button", { name: "Delete item" }),
+    ).not.toBeOnTheScreen();
+  });
+
+  test("shows the delete button while the text field is focused", async () => {
+    await renderRow();
+
+    await fireEvent(screen.getByDisplayValue("Milk"), "focus");
+
+    expect(
+      screen.getByRole("button", { name: "Delete item" }),
+    ).toBeOnTheScreen();
+  });
+
+  test("hides the delete button again when the text field loses focus", async () => {
+    await renderRow();
+    const input = screen.getByDisplayValue("Milk");
+
+    await fireEvent(input, "focus");
+    await fireEvent(input, "blur");
+
+    expect(
+      screen.queryByRole("button", { name: "Delete item" }),
+    ).not.toBeOnTheScreen();
+  });
+
+  test("calls onPressDelete when the delete button is pressed", async () => {
+    const onPressDelete = jest.fn();
+    await renderRow({ onPressDelete });
+
+    await fireEvent(screen.getByDisplayValue("Milk"), "focus");
+    await fireEvent.press(screen.getByRole("button", { name: "Delete item" }));
+
+    expect(onPressDelete).toHaveBeenCalledTimes(1);
+  });
 });

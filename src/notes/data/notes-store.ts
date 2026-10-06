@@ -1,6 +1,7 @@
 import { SeedData } from "@/notes/data/seed-data";
 import { compareNotes } from "@/notes/sorting";
 import { type Note } from "@/notes/types";
+import { EpochMs } from "@/utils/time";
 
 let notes = [...SeedData].sort(compareNotes);
 
@@ -23,4 +24,8 @@ export function updateNote(noteId: string, patch: Note) {
   listeners.forEach((listener) => {
     listener();
   });
+}
+
+export function saveNote(noteId: string, edit: (now: EpochMs) => Note) {
+  updateNote(noteId, edit(Date.now()));
 }

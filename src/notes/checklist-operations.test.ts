@@ -1,6 +1,7 @@
 import {
   createItem,
   deleteItem,
+  findNeighborId,
   getChecklistSections,
   toggleItemCheckmark,
   updateItemText,
@@ -256,5 +257,25 @@ describe("deleteItem", () => {
     const note = checklist({ milk: item() });
 
     expect(deleteItem(note, "missing", 2_000)).toBe(note);
+  });
+});
+
+describe("findNeighborId", () => {
+  const rows = ["a", "b", "c"].map((id) => ({ ...item(), id }));
+
+  test("prefers the item below", () => {
+    expect(findNeighborId("b", rows)).toBe("c");
+  });
+
+  test("returns the item below for the first item", () => {
+    expect(findNeighborId("a", rows)).toBe("b");
+  });
+
+  test("falls back to the item above for the last item", () => {
+    expect(findNeighborId("c", rows)).toBe("b");
+  });
+
+  test("returns undefined when the item is the only one", () => {
+    expect(findNeighborId("a", rows.slice(0, 1))).toBeUndefined();
   });
 });
