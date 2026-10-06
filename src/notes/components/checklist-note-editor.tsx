@@ -20,7 +20,10 @@ import {
 } from "@/notes/types";
 import { randomUUID } from "expo-crypto";
 import { useRef } from "react";
-import { ScrollView, TextInput } from "react-native";
+import { Keyboard, ScrollView, TextInput, View } from "react-native";
+import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = { note: ChecklistNote };
 
@@ -30,8 +33,14 @@ export function ChecklistNoteEditor({ note }: Props) {
   const checkedHidden = useCheckedHidden(note.id);
   const inputs = useRef(new Map<string, TextInput>());
   const pendingFocusId = useRef<string | null>(null);
+  const { height } = useReanimatedKeyboardAnimation();
+  const insets = useSafeAreaInsets();
+  const bottomSpacer = useAnimatedStyle(() => ({
+    height: Math.max(-height.get(), insets.bottom),
+  }));
 
   function onToggleCheck(itemId: string) {
+    Keyboard.dismiss();
     saveNote(note.id, (now) => toggleItemCheckmark(note, itemId, now));
   }
 
@@ -88,19 +97,26 @@ export function ChecklistNoteEditor({ note }: Props) {
   }
 
   return (
-    <ScrollView className="m-1" keyboardShouldPersistTaps="handled">
-      {sections.unchecked.map((item) => renderRow(item))}
-      <NewChecklistRow onPress={onPressCreate} />
-      {sections.checked.length === 0 ? null : (
-        <Collapsible
-          label={`${sections.checked.length} Checked item${sections.checked.length > 1 ? "s" : ""}`}
-          color={colors.onSurface}
-          isExpanded={!checkedHidden}
-          onToggle={() => setCheckedHidden(note.id, !checkedHidden)}
-        >
-          {sections.checked.map((item) => renderRow(item))}
-        </Collapsible>
-      )}
-    </ScrollView>
+    <View style={{ flex: 1 }}>
+      <ScrollView
+        className="m-1"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ paddingBottom: insets.bottom }}
+      >
+        {sections.unchecked.map((item) => renderRow(item))}
+        <NewChecklistRow onPress={onPressCreate} />
+        {sections.checked.length === 0 ? null : (
+          <Collapsible
+            label={`${sections.checked.length} Checked item${sections.checked.length > 1 ? "s" : ""}`}
+            color={colors.onSurface}
+            isExpanded={!checkedHidden}
+            onToggle={() => setCheckedHidden(note.id, !checkedHidden)}
+          >
+            {sections.checked.map((item) => renderRow(item))}
+          </Collapsible>
+        )}
+      </ScrollView>
+      <Animated.View style={bottomSpacer} />
+    </View>
   );
 }

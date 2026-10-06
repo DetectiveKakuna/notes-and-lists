@@ -244,6 +244,10 @@ sets `inlineRem: 16`. Each step is then 4dp, the same as Tailwind on the web:
   with the note.
 - [expo-crypto](https://docs.expo.dev/versions/v57.0.0/sdk/crypto/) for
   generating random IDs for new list items
+- [react-native-keyboard-controller](https://docs.expo.dev/versions/v57.0.0/sdk/keyboard-controller/)
+  for keeping the note editor above the on-screen keyboard. Android apps now
+  draw edge to edge and are no longer resized for the keyboard, so the editor
+  ends in a spacer that grows with the keyboard's height, frame by frame.
 - React Native Reanimated for animation
 - [NativeWind](https://www.nativewind.dev/) v4 (Tailwind CSS v3) for styling,
   the stable release rather than the v5 release candidate

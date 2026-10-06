@@ -3,6 +3,7 @@ import { getNavigationTheme } from "@/theme/navigation";
 import { type ErrorBoundaryProps, Stack } from "expo-router";
 import { ThemeProvider } from "expo-router/react-navigation";
 import { useColorScheme } from "react-native";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import "../global.css";
 
 function ScreenErrorBoundary({ retry }: ErrorBoundaryProps) {
@@ -20,9 +21,11 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={getNavigationTheme(currentColorScheme)}>
-      <Stack>
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
-      </Stack>
+      <KeyboardProvider statusBarTranslucent navigationBarTranslucent>
+        <Stack>
+          <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        </Stack>
+      </KeyboardProvider>
     </ThemeProvider>
   );
 }
