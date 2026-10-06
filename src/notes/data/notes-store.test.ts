@@ -88,6 +88,43 @@ describe("updateNote", () => {
   });
 });
 
+describe("saveNote", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test("passes the current time to the edit", () => {
+    jest.spyOn(Date, "now").mockReturnValue(5_000);
+    const edit = jest.fn((now: number) =>
+      textNote({ id: "b", order: 2, updatedAt: now }),
+    );
+
+    store.saveNote("b", edit);
+
+    expect(edit).toHaveBeenCalledWith(5_000);
+  });
+
+  test("stores the note the edit returns", () => {
+    const edited = textNote({ id: "b", order: 2, title: "Renamed" });
+
+    store.saveNote("b", () => edited);
+
+    expect(findNote(store.getNotes(), "b")).toBe(edited);
+  });
+
+  test("calls subscribers after saving", () => {
+    const listener = jest.fn();
+    const unsubscribe = store.subscribeToNotes(listener);
+
+    store.saveNote("b", (now) =>
+      textNote({ id: "b", order: 2, updatedAt: now }),
+    );
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    unsubscribe();
+  });
+});
+
 describe("subscribeToNotes", () => {
   test("calls a subscriber after an update", () => {
     const listener = jest.fn();
