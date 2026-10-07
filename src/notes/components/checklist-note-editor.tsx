@@ -19,7 +19,7 @@ import {
   type WithId,
 } from "@/notes/types";
 import { randomUUID } from "expo-crypto";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Keyboard, ScrollView, TextInput, View } from "react-native";
 import { useReanimatedKeyboardAnimation } from "react-native-keyboard-controller";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
@@ -27,8 +27,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = { note: ChecklistNote };
 
+const SETTLE_MS = 225;
+
+function withoutId(ids: ReadonlySet<string>, id: string): ReadonlySet<string> {
+  const next = new Set(ids);
+  next.delete(id);
+  return next;
+}
+
 export function ChecklistNoteEditor({ note }: Props) {
-  const sections = getChecklistSections(note);
   const colors = useColors();
   const checkedHidden = useCheckedHidden(note.id);
   const inputs = useRef(new Map<string, TextInput>());
@@ -39,9 +46,25 @@ export function ChecklistNoteEditor({ note }: Props) {
     height: Math.max(-height.get(), insets.bottom),
   }));
 
+  const [settlingIds, setSettlingIds] = useState<ReadonlySet<string>>(
+    new Set(),
+  );
+  const sections = getChecklistSections(note, settlingIds);
+
   function onToggleCheck(itemId: string) {
     Keyboard.dismiss();
     saveNote(note.id, (now) => toggleItemCheckmark(note, itemId, now));
+
+    // Toggled while still settling. Revert the animation.
+    if (settlingIds.has(itemId)) {
+      setSettlingIds((prev) => withoutId(prev, itemId));
+      return;
+    }
+
+    setSettlingIds((prev) => new Set(prev).add(itemId));
+    setTimeout(() => {
+      setSettlingIds((prev) => withoutId(prev, itemId));
+    }, SETTLE_MS);
   }
 
   function onChangeText(itemId: string, text: string) {
@@ -59,10 +82,11 @@ export function ChecklistNoteEditor({ note }: Props) {
   }
 
   function onPressDelete(item: WithId<ChecklistItem>) {
-    const neighborId = findNeighborId(
-      item.id,
-      item.checked ? sections.checked : sections.unchecked,
-    );
+    const section = sections.unchecked.some((i) => i.id === item.id)
+      ? sections.unchecked
+      : sections.checked;
+
+    const neighborId = findNeighborId(item.id, section);
 
     saveNote(note.id, (now) => deleteItem(note, item.id, now));
 

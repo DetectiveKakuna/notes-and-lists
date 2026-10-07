@@ -1,4 +1,4 @@
-import { compareItems } from "@/notes/sorting";
+import { compareItemOrder } from "@/notes/sorting";
 import {
   type ChecklistItem,
   type ChecklistNote,
@@ -11,18 +11,21 @@ export type ChecklistSections = {
   checked: WithId<ChecklistItem>[];
 };
 
-export function getChecklistSections(note: ChecklistNote): ChecklistSections {
+export function getChecklistSections(
+  note: ChecklistNote,
+  settling: ReadonlySet<string> = new Set(),
+): ChecklistSections {
   const items = Object.entries(note.items)
-    .map(([id, item]) => ({
-      id,
-      ...item,
-    }))
-    .sort(compareItems);
+    .map(([id, item]) => ({ id, ...item }))
+    .sort(compareItemOrder);
 
-  const checked = items.filter((item) => item.checked);
-  const unchecked = items.filter((item) => !item.checked);
+  const showInChecked = (item: WithId<ChecklistItem>) =>
+    item.checked !== settling.has(item.id);
 
-  return { unchecked, checked };
+  return {
+    unchecked: items.filter((item) => !showInChecked(item)),
+    checked: items.filter(showInChecked),
+  };
 }
 
 export function updateItemText(

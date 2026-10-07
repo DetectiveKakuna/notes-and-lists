@@ -93,6 +93,56 @@ describe("getChecklistSections", () => {
       }),
     );
   });
+
+  test("keeps a settling checked item in the unchecked section", () => {
+    const note = checklist({
+      milk: item({ order: 1, checked: true }),
+      eggs: item({ order: 2 }),
+    });
+
+    const { unchecked, checked } = getChecklistSections(
+      note,
+      new Set(["milk"]),
+    );
+
+    expect(unchecked.map((i) => i.id)).toEqual(["milk", "eggs"]);
+    expect(checked).toEqual([]);
+  });
+
+  test("keeps a settling unchecked item in the checked section", () => {
+    const note = checklist({
+      milk: item({ order: 1 }),
+      eggs: item({ order: 2, checked: true }),
+    });
+
+    const { unchecked, checked } = getChecklistSections(
+      note,
+      new Set(["milk"]),
+    );
+
+    expect(unchecked).toEqual([]);
+    expect(checked.map((i) => i.id)).toEqual(["milk", "eggs"]);
+  });
+
+  test("keeps a settling item in its place by order, not at the end", () => {
+    const note = checklist({
+      first: item({ order: 1 }),
+      settling: item({ order: 2, checked: true }),
+      third: item({ order: 3 }),
+    });
+
+    const { unchecked } = getChecklistSections(note, new Set(["settling"]));
+
+    expect(unchecked.map((i) => i.id)).toEqual(["first", "settling", "third"]);
+  });
+
+  test("ignores settling ids that are not in the note", () => {
+    const note = checklist({ milk: item({ checked: true }) });
+
+    const { checked } = getChecklistSections(note, new Set(["missing"]));
+
+    expect(checked.map((i) => i.id)).toEqual(["milk"]);
+  });
 });
 
 describe("updateItemText", () => {
