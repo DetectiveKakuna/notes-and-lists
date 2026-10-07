@@ -1,4 +1,4 @@
-import { compareItems, compareNotes } from "@/notes/sorting";
+import { compareItemOrder, compareItems, compareNotes } from "@/notes/sorting";
 import { type ListItemBase, type NoteBase } from "@/notes/types";
 
 function item(overrides: Partial<ListItemBase> = {}): ListItemBase {
@@ -23,6 +23,29 @@ function note(overrides: Partial<NoteBase> = {}): NoteBase {
     ...overrides,
   };
 }
+
+describe("compareItemOrder", () => {
+  test("ignores whether items are checked", () => {
+    const checkedFirst = item({ checked: true, order: 1 });
+    const uncheckedSecond = item({ checked: false, order: 2 });
+
+    expect(compareItemOrder(checkedFirst, uncheckedSecond)).toBeLessThan(0);
+  });
+
+  test("breaks an order tie with the earlier createdAt, then by text", () => {
+    const earlier = item({ order: 5, createdAt: 1_000, text: "Zucchini" });
+    const later = item({ order: 5, createdAt: 2_000, text: "Apple" });
+    const apple = item({ text: "Apple" });
+    const banana = item({ text: "Banana" });
+
+    expect(compareItemOrder(earlier, later)).toBeLessThan(0);
+    expect(compareItemOrder(apple, banana)).toBeLessThan(0);
+  });
+
+  test("treats items that match on order, createdAt, and text as equal", () => {
+    expect(compareItemOrder(item({ checked: true }), item())).toBe(0);
+  });
+});
 
 describe("compareNotes", () => {
   test("puts the lower order first", () => {

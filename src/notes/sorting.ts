@@ -1,12 +1,15 @@
 import { type ListItemBase, type NoteBase } from "@/notes/types";
 
-export function compareItems(a: ListItemBase, b: ListItemBase): number {
+export function compareItemOrder(a: ListItemBase, b: ListItemBase): number {
   return (
-    Number(a.checked) - Number(b.checked) ||
     a.order - b.order ||
     a.createdAt - b.createdAt ||
     a.text.localeCompare(b.text)
   );
+}
+
+export function compareItems(a: ListItemBase, b: ListItemBase): number {
+  return Number(a.checked) - Number(b.checked) || compareItemOrder(a, b);
 }
 
 export function compareNotes(a: NoteBase, b: NoteBase): number {
